@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="app_bar_menu_size">38dp</dimen>
+    <dimen name="app_bar_menu_corner">32dp</dimen>
+    <dimen name="app_bar_menu_icon_size">18dp</dimen>
+    <dimen name="app_bar_menu_elevation">0dp</dimen>
+</resources>

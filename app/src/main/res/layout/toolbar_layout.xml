@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.Toolbar
+    android:id="@+id/toolbar"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white"
+    app:contentInsetStart="0dp"
+    app:contentInsetEnd="0dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="8dp">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            style="@style/TextAppearance.MaterialComponents.Headline6"
+            android:text="@string/app_name" />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.Theme.Outlined.IconOnly"
+            android:id="@+id/btn_search"
+            android:layout_width="@dimen/app_bar_menu_size"
+            android:layout_height="@dimen/app_bar_menu_size"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            app:elevation="@dimen/app_bar_menu_elevation"
+            app:strokeColor="@color/grey"
+            app:cornerRadius="@dimen/app_bar_menu_corner"
+            app:icon="@drawable/ic_search"
+            app:iconTint="@color/dark_grey"
+            app:iconSize="@dimen/app_bar_menu_icon_size"
+            />
+
+        <com.google.android.material.button.MaterialButton
+            style="@style/Widget.Theme.Outlined.IconOnly"
+            android:id="@+id/btn_bookmark"
+            android:layout_width="@dimen/app_bar_menu_size"
+            android:layout_height="@dimen/app_bar_menu_size"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            app:elevation="@dimen/app_bar_menu_elevation"
+            app:strokeColor="@color/grey"
+            app:cornerRadius="@dimen/app_bar_menu_corner"
+            app:icon="@drawable/ic_heart_outlined"
+            app:iconTint="@color/dark_grey"
+            app:iconSize="@dimen/app_bar_menu_icon_size"
+            />
+
+    </RelativeLayout>
+
+</androidx.appcompat.widget.Toolbar>
