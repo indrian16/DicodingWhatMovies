@@ -4,4 +4,5 @@
     <dimen name="app_bar_menu_corner">32dp</dimen>
     <dimen name="app_bar_menu_icon_size">18dp</dimen>
     <dimen name="app_bar_menu_elevation">0dp</dimen>
+    <dimen name="item_layout_width">150dp</dimen>
 </resources>
