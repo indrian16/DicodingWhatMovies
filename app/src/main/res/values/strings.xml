@@ -4,4 +4,9 @@
     <string name="tv_show">TV Show</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="poster">Poster</string>
+    <string name="title">Title</string>
+    <string name="genre">Genre</string>
+    <string name="detail">Detail</string>
+    <string name="backdrop">Backdrop</string>
 </resources>
