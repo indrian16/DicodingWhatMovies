@@ -7,7 +7,7 @@ import io.indrian.whatmovies.data.repositories.Repository
 
 class DetailViewModel : ViewModel() {
 
-    fun getDetailMovies(id: Long): Movie? = Repository.getDetailMovies(id)
+    fun getDetailMovies(id: Long): Movie = Repository.getDetailMovies(id)
 
-    fun getDetailTVShow(id: Long): TVShow? = Repository.getDetailTVShow(id)
+    fun getDetailTVShow(id: Long): TVShow = Repository.getDetailTVShow(id)
 }

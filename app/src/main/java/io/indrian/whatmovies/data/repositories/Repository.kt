@@ -375,19 +375,27 @@ object Repository {
         )
     }
 
-    fun getDetailMovies(id: Long): Movie? {
-        val movie = getMovies().find { it.id == id }
-        if (movie != null) {
-            throw Exception("getDetailMovies(id: $id) is not found")
+    fun getDetailMovies(id: Long): Movie {
+        val filterMovie = getMovies().filter { it.id == id }.toList()
+        val movie: Movie?
+
+        if (filterMovie.isNotEmpty()) {
+            movie = filterMovie.first()
+        } else {
+            throw NullPointerException("getDetailMovies(id: $id) is not found")
         }
         return movie
     }
 
-    fun getDetailTVShow(id: Long): TVShow? {
-        val movie = getTVShows().find { it.id == id }
-        if (movie != null) {
-            throw Exception("getDetailTVShow(id: $id) is not found")
+    fun getDetailTVShow(id: Long): TVShow {
+        val filterTVShow = getTVShows().filter { it.id == id }.toList()
+        val tvShow: TVShow?
+
+        if (filterTVShow.isNotEmpty()) {
+            tvShow = filterTVShow.first()
+        } else {
+            throw NullPointerException("getDetailTVShow(id: $id) is not found")
         }
-        return movie
+        return tvShow
     }
 }
