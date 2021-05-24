@@ -3,7 +3,7 @@ package io.indrian.whatmovies.data.repositories
 import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.data.models.TVShow
 
-class Repository {
+object Repository {
 
     fun getMovies(): List<Movie> {
         return listOf(

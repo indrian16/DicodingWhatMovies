@@ -1,0 +1,10 @@
+package io.indrian.whatmovies.ui.tvshow
+
+import androidx.lifecycle.ViewModel
+import io.indrian.whatmovies.data.models.TVShow
+import io.indrian.whatmovies.data.repositories.Repository
+
+class TVShowViewModel : ViewModel() {
+
+    fun getTVShows(): List<TVShow> = Repository.getTVShows()
+}
