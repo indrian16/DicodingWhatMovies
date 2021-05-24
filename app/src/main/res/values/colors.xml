@@ -6,10 +6,10 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="deep_purple_200">#B39DDB</color>
-    <color name="deep_purple_500">#673AB7</color>
-    <color name="deep_purple_700">#512DA8</color>
-    <color name="cyan_200">#80DEEA</color>
-    <color name="cyan_700">#0097A7</color>
+    <color name="colorPrimary">#673AB7</color>
+    <color name="colorPrimaryVariant">#512DA8</color>
+    <color name="colorSecondary">#80DEEA</color>
+    <color name="colorSecondaryVariant">#0097A7</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
     <color name="dark_grey">#616161</color>

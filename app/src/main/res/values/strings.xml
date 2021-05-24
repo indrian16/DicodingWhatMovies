@@ -9,4 +9,6 @@
     <string name="genre">Genre</string>
     <string name="detail">Detail</string>
     <string name="backdrop">Backdrop</string>
+    <string name="star">star</string>
+    <string name="overview">Overview</string>
 </resources>

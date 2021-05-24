@@ -1,11 +1,13 @@
 package io.indrian.whatmovies.ui.detail
 
 import android.content.Intent
+import android.content.res.ColorStateList
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import io.indrian.whatmovies.R
 import io.indrian.whatmovies.databinding.ActivityDetailBinding
+import io.indrian.whatmovies.utils.toGone
 
 class DetailActivity : AppCompatActivity() {
 
@@ -21,14 +23,21 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun setupToolbar() {
-        _binding?.toolbarLayout?.let {
-            
-            // Set Properties
-            it.tvTitle.text = getString(R.string.detail)
-            it.btnStart.icon = ContextCompat.getDrawable(this, R.drawable.ic_back)
+        // Set AppBar
+        binding.appBar.outlineProvider = null
 
-            // Set Listener
-            it.btnStart.setOnClickListener { finish() }
+        // Set Toolbar
+        with(binding.toolbarLayout) {
+            toolbar.setBackgroundColor(ContextCompat.getColor(this@DetailActivity, android.R.color.transparent))
+            tvTitle.toGone()
+            btnStart.setIconResource(R.drawable.ic_back)
+            btnStart.setIconTintResource(R.color.colorPrimary)
+            btnStart.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(root.context, R.color.colorPrimary))
+            btnEnd.setIconTintResource(R.color.colorPrimary)
+            btnEnd.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(root.context, R.color.colorPrimary))
+
+            btnStart.setOnClickListener { finish() }
+            btnEnd.setOnClickListener {  }
         }
     }
 
