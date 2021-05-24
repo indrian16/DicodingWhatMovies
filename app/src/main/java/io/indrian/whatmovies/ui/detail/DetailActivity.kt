@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.core.content.ContextCompat
 import io.indrian.whatmovies.R
+import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.databinding.ActivityDetailBinding
 import io.indrian.whatmovies.utils.toGone
 
@@ -47,8 +48,9 @@ class DetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        fun push(activity: AppCompatActivity) {
+        fun pushMovie(activity: AppCompatActivity, movie: Movie) {
             val intent = Intent(activity, DetailActivity::class.java)
+            //intent.putExtra()
             activity.startActivity(intent)
         }
     }

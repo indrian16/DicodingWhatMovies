@@ -34,7 +34,7 @@ object Repository {
             Movie(
                 id = 578701,
                 backdropPath = "/iDdpiUnCeXvBmrkBFpL6lKsZt33.jpg",
-                genreIds = listOf(),
+                genreIds = listOf(53, 18, 28, 9648),
                 overview = "A young boy finds himself pursued by two assassins in the Montana wilderness with a survival expert determined to protecting him - and a forest fire threatening to consume them all.",
                 popularity = 2835.542,
                 posterPath = "/xCEg6KowNISWvMh8GvPSxtdf9TO.jpg",
@@ -46,7 +46,7 @@ object Repository {
             Movie(
                 id = 399566,
                 backdropPath = "/inJjDhCjfhh3RtrJWBmmDqeuSYC.jpg",
-                genreIds = listOf(),
+                genreIds = listOf(878, 28, 18),
                 overview = "In a time when monsters walk the Earth, humanity’s fight for its future sets Godzilla and Kong on a collision course that will see the two most powerful forces of nature on the planet collide in a spectacular battle for the ages.",
                 popularity = 2075.791,
                 posterPath = "/pgqgaUx1cJb5oZQQ5v0tNARCeBp.jpg",
@@ -128,16 +128,16 @@ object Repository {
                 voteCount = 330
             ),
             Movie(
-                id = 0L,
-                backdropPath = "",
-                genreIds = listOf(),
-                overview = "",
-                popularity = 0.0,
-                posterPath = "",
-                releaseDate = "",
-                title = "",
-                voteAverage = 0.0,
-                voteCount = 0
+                id = 717192,
+                backdropPath = "Ferry",
+                genreIds = listOf(28, 80, 18),
+                overview = "Before he built a drug empire, Ferry Bouman returns to his hometown on a revenge mission that finds his loyalty tested — and a love that alters his life.",
+                popularity = 860.758,
+                posterPath = "/w6n1pu9thpCVHILejsuhKf3tNCV.jpg",
+                releaseDate = "2021-05-14",
+                title = "Ferry",
+                voteAverage = 7.3,
+                voteCount = 50
             ),
             Movie(
                 id = 791373,
