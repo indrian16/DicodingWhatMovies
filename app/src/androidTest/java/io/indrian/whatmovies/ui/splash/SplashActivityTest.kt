@@ -17,7 +17,6 @@ class SplashActivityTest {
     @Test
     fun splashScreen() {
         onView(withId(R.id.splash_animation)).check(matches(isDisplayed()))
-        onView(withId(R.id.splash_animation)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_version)).check(matches(isDisplayed()))
     }
 }
