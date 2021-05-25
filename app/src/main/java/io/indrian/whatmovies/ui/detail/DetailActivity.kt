@@ -6,6 +6,7 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
@@ -16,13 +17,12 @@ import io.indrian.whatmovies.databinding.ActivityDetailBinding
 import io.indrian.whatmovies.di.GlideApp
 import io.indrian.whatmovies.utils.AppUtils
 import io.indrian.whatmovies.utils.toGone
+import timber.log.Timber
 
 class DetailActivity : AppCompatActivity() {
 
     private var _binding: ActivityDetailBinding? = null
     private val binding: ActivityDetailBinding get() = _binding!!
-
-    private var isMovie: Boolean = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +34,7 @@ class DetailActivity : AppCompatActivity() {
         val viewModel: DetailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[DetailViewModel::class.java]
 
         // Handle Type Detail
-        isMovie = intent?.getBooleanExtra(IS_MOVIE_EXTRA, true) ?: true
+        val isMovie = intent?.getBooleanExtra(IS_MOVIE_EXTRA, true) ?: true
         val id = intent?.getLongExtra(ID_EXTRA, 0L) ?: 0L
         if (isMovie) {
             val movie = viewModel.getDetailMovies(id)
@@ -61,12 +61,7 @@ class DetailActivity : AppCompatActivity() {
             btnEnd.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(root.context, R.color.white))
 
             btnStart.setOnClickListener { finish() }
-            btnEnd.setOnClickListener {  }
         }
-    }
-
-    private fun shareMovie() {
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -89,6 +84,10 @@ class DetailActivity : AppCompatActivity() {
                 }
             }.forEach {
                 genreGroup.addView(it)
+            }
+
+            binding.toolbarLayout.btnEnd.setOnClickListener {
+                shareIt(movie.title, movie.overview)
             }
         }
     }
@@ -114,7 +113,29 @@ class DetailActivity : AppCompatActivity() {
             }.forEach {
                 genreGroup.addView(it)
             }
+
+            binding.toolbarLayout.btnEnd.setOnClickListener {
+                shareIt(tvShow.name, tvShow.overview)
+            }
         }
+    }
+
+    /**
+     * Share Information:
+     * Title
+     *
+     * Overview
+     * Text Body
+     * */
+    private fun shareIt(title: String, overview: String) {
+        val mimeType = "text/plain"
+        val text = "$title\n\n${getString(R.string.overview)}\n$overview"
+        ShareCompat.IntentBuilder
+            .from(this)
+            .setType(mimeType)
+            .setChooserTitle("${getString(R.string.you_share)} $title ?")
+            .setText(text)
+            .startChooser()
     }
 
     override fun onDestroy() {
