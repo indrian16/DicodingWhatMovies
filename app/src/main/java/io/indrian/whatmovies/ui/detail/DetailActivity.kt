@@ -17,7 +17,7 @@ import io.indrian.whatmovies.databinding.ActivityDetailBinding
 import io.indrian.whatmovies.di.GlideApp
 import io.indrian.whatmovies.utils.AppUtils
 import io.indrian.whatmovies.utils.toGone
-import timber.log.Timber
+import io.indrian.whatmovies.utils.toast
 
 class DetailActivity : AppCompatActivity() {
 
@@ -81,6 +81,7 @@ class DetailActivity : AppCompatActivity() {
             movie.genreIds.map {
                 Chip(this@DetailActivity).apply {
                     text = AppUtils.getGenreName(it)
+                    setOnClickListener { toast(getString(R.string.coming_soon)) }
                 }
             }.forEach {
                 genreGroup.addView(it)
@@ -109,6 +110,7 @@ class DetailActivity : AppCompatActivity() {
             tvShow.genreIds.map {
                 Chip(this@DetailActivity).apply {
                     text = AppUtils.getGenreName(it)
+                    setOnClickListener { toast(getString(R.string.coming_soon)) }
                 }
             }.forEach {
                 genreGroup.addView(it)

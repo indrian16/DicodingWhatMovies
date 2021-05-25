@@ -7,10 +7,12 @@ import android.view.ViewGroup
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import io.indrian.whatmovies.R
 import io.indrian.whatmovies.adapter.TVShowAdapter
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.databinding.FragmentTVShowBinding
 import io.indrian.whatmovies.ui.detail.DetailActivity
+import io.indrian.whatmovies.utils.toast
 
 class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
 
@@ -40,6 +42,10 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
         activity?.let {
             DetailActivity.push(it, tvShows.id, false)
         }
+    }
+
+    override fun onWhiteList(tvShows: TVShow) {
+        toast(getString(R.string.coming_soon))
     }
 
     override fun onDestroyView() {

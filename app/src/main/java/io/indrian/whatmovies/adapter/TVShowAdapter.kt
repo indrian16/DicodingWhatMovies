@@ -3,6 +3,7 @@ package io.indrian.whatmovies.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.databinding.ItemLayoutBinding
 import io.indrian.whatmovies.di.GlideApp
@@ -35,6 +36,7 @@ class TVShowAdapter(private val onItemCallbackListener: OnItemCallbackListener) 
 
     interface OnItemCallbackListener {
         fun onClickItem(tvShows: TVShow)
+        fun onWhiteList(tvShows: TVShow)
     }
 
     inner class ViewHolder(private val itemBinding: ItemLayoutBinding) : RecyclerView.ViewHolder(itemBinding.root) {
@@ -48,6 +50,9 @@ class TVShowAdapter(private val onItemCallbackListener: OnItemCallbackListener) 
                 ratingBar.rating = AppUtils.getFiveStar(tvShows.voteAverage)
                 tvRating.text = tvShows.voteAverage.toString()
                 tvGenre.text = tvShows.genreIds.joinToString { AppUtils.getGenreName(it) }
+                btnWhiteList.setOnClickListener {
+                    onItemCallbackListener.onWhiteList(tvShows)
+                }
 
                 root.setOnClickListener {
                     onItemCallbackListener.onClickItem(tvShows)

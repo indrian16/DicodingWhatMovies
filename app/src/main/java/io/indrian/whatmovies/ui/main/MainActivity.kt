@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.tabs.TabLayoutMediator
 import io.indrian.whatmovies.R
 import io.indrian.whatmovies.databinding.ActivityMainBinding
+import io.indrian.whatmovies.utils.toast
 
 class MainActivity : AppCompatActivity() {
 
@@ -16,7 +17,15 @@ class MainActivity : AppCompatActivity() {
         _binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        setupToolbar()
         setupTabPager()
+    }
+
+    private fun setupToolbar() {
+        with(binding.toolbarLayout) {
+            btnStart.setOnClickListener { toast(getString(R.string.coming_soon)) }
+            btnEnd.setOnClickListener { toast(getString(R.string.coming_soon)) }
+        }
     }
 
     private fun setupTabPager() {

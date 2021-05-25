@@ -6,10 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import io.indrian.whatmovies.R
 import io.indrian.whatmovies.adapter.MovieAdapter
 import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.databinding.FragmentMovieBinding
 import io.indrian.whatmovies.ui.detail.DetailActivity
+import io.indrian.whatmovies.utils.toast
 
 class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
 
@@ -39,6 +41,10 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
         activity?.let {
             DetailActivity.push(it, movie.id, true)
         }
+    }
+
+    override fun onWhiteList(movie: Movie) {
+        toast(getString(R.string.coming_soon))
     }
 
     override fun onDestroyView() {
