@@ -6,7 +6,6 @@ import android.content.Intent
 import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.ShareCompat
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
@@ -130,14 +129,15 @@ class DetailActivity : AppCompatActivity() {
      * Text Body
      * */
     private fun shareIt(title: String, overview: String) {
-        val mimeType = "text/plain"
         val text = "$title\n\n${getString(R.string.overview)}\n$overview"
-        ShareCompat.IntentBuilder
-            .from(this)
-            .setType(mimeType)
-            .setChooserTitle("${getString(R.string.you_share)} $title ?")
-            .setText(text)
-            .startChooser()
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, text)
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(sendIntent, "${getString(R.string.you_share)} $title ?")
+        startActivity(shareIntent)
     }
 
     override fun onDestroy() {
