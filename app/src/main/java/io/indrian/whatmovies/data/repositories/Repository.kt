@@ -129,7 +129,7 @@ object Repository {
             ),
             Movie(
                 id = 717192,
-                backdropPath = "Ferry",
+                backdropPath = "/fejok33Ijc6SppiEU1cfwA9Mo2.jpg",
                 genreIds = listOf(28, 80, 18),
                 overview = "Before he built a drug empire, Ferry Bouman returns to his hometown on a revenge mission that finds his loyalty tested — and a love that alters his life.",
                 popularity = 860.758,
