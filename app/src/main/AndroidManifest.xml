@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="io.indrian.whatmovies">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:name=".WhatMoviesApp"
@@ -14,14 +14,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhatMovies"
         tools:ignore="AllowBackup">
-        <activity android:name=".ui.detail.DetailActivity"></activity>
-        <activity android:name=".ui.main.MainActivity">
+        <activity android:name=".ui.splash.SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".ui.detail.DetailActivity"/>
+        <activity android:name=".ui.main.MainActivity" />
     </application>
 
 </manifest>

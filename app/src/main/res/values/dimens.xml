@@ -7,4 +7,5 @@
     <dimen name="item_layout_width">140dp</dimen>
     <dimen name="item_card_poster_width">85dp</dimen>
     <dimen name="item_card_poster_height">120dp</dimen>
+    <dimen name="splash_animation">200dp</dimen>
 </resources>
