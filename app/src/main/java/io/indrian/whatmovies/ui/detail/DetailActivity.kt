@@ -41,6 +41,7 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         // Set AppBar
+        supportActionBar?.hide()
         binding.appBar.outlineProvider = null
 
         // Set Toolbar
