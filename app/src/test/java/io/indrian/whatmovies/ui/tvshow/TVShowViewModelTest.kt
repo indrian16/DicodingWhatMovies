@@ -1,9 +1,9 @@
 package io.indrian.whatmovies.ui.tvshow
 
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
 import org.junit.Before
 import org.junit.Test
-
-import org.junit.Assert.*
 
 class TVShowViewModelTest {
 
@@ -17,7 +17,7 @@ class TVShowViewModelTest {
     @Test
     fun getTVShows() {
         val tvShows = viewModel.getTVShows()
-        assertNotNull(tvShows)
-        assertEquals(15, tvShows.size)
+        tvShows.shouldNotBeNull()
+        tvShows.size.shouldBe(15)
     }
 }

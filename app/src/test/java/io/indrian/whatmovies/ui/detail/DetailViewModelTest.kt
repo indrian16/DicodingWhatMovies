@@ -1,5 +1,7 @@
 package io.indrian.whatmovies.ui.detail
 
+import io.kotest.matchers.nulls.shouldNotBeNull
+import io.kotest.matchers.shouldBe
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
@@ -17,15 +19,15 @@ class DetailViewModelTest {
     @Test
     fun getDetailMovies() {
         val movie = viewModel.getDetailMovies(id = 460465)
-        assertNotNull(movie)
-        assertEquals("Mortal Kombat", movie.title)
+        movie.shouldNotBeNull()
+        movie.title.shouldBe("Mortal Kombat")
     }
 
     @Test
     fun getDetailTVShow() {
         val tvShow = viewModel.getDetailTVShow(id = 60735)
-        assertNotNull(tvShow)
-        assertEquals("The Flash", tvShow.name)
+        tvShow.shouldNotBeNull()
+        tvShow.name.shouldBe("The Flash")
     }
 
     @Test
@@ -34,7 +36,7 @@ class DetailViewModelTest {
             viewModel.getDetailMovies(id = 12345)
         }
 
-        assertEquals("getDetailMovies(id: 12345) is not found", exception.message)
+        exception.message.shouldBe("getDetailMovies(id: 12345) is not found")
     }
 
     @Test
@@ -43,6 +45,6 @@ class DetailViewModelTest {
             viewModel.getDetailTVShow(id = 54321)
         }
 
-        assertEquals("getDetailTVShow(id: 54321) is not found", exception.message)
+        exception.message.shouldBe("getDetailTVShow(id: 54321) is not found")
     }
 }
