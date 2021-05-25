@@ -47,7 +47,7 @@ class TVShowAdapter(private val onItemCallbackListener: OnItemCallbackListener) 
                 tvTitle.text = tvShows.name
                 ratingBar.rating = AppUtils.getFiveStar(tvShows.voteAverage)
                 tvRating.text = tvShows.voteAverage.toString()
-                tvGenre.text = tvShows.genreIds.joinToString { AppUtils.getTVShowGenre(it) }
+                tvGenre.text = tvShows.genreIds.joinToString { AppUtils.getGenreName(it) }
 
                 root.setOnClickListener {
                     onItemCallbackListener.onClickItem(tvShows)

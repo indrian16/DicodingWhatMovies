@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import io.indrian.whatmovies.adapter.MovieAdapter
 import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.databinding.FragmentMovieBinding
+import io.indrian.whatmovies.ui.detail.DetailActivity
 
 class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
 
@@ -35,7 +36,9 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
     }
 
     override fun onClickItem(movie: Movie) {
-
+        activity?.let {
+            DetailActivity.pushMovie(it, movie)
+        }
     }
 
     override fun onDestroyView() {

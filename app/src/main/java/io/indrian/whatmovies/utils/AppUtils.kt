@@ -1,5 +1,10 @@
 package io.indrian.whatmovies.utils
 
+import java.text.SimpleDateFormat
+import java.time.LocalDate
+import java.time.format.DateTimeFormatter
+import java.util.*
+
 object AppUtils {
 
     fun getImagePath(path: String): String {
@@ -10,7 +15,7 @@ object AppUtils {
         return (average / 2).toFloat()
     }
 
-    fun getMovieGenre(genre: Int): String {
+    fun getGenreName(genre: Int): String {
         return when (genre) {
             28 -> "Action"
             12 -> "Adventure"
@@ -31,29 +36,19 @@ object AppUtils {
             53 -> "Thriller"
             10752 -> "War"
             37 -> "Western"
-            else -> "Genre"
-        }
-    }
-
-    fun getTVShowGenre(genre: Int): String {
-        return when (genre) {
             10759 -> "Action & Adventure"
-            16 -> "Animation"
-            35 -> "Comedy"
-            80 -> "Crime"
-            99 -> "Documentary"
-            18 -> "Drama"
-            10751 -> "Family"
             10762 -> "Kids"
-            9648 -> "Mystery"
             10763 -> "News"
             10764 -> "Reality"
             10765 -> "Sci-Fi & Fantasy"
             10766 -> "Soap"
             10767 -> "Talk"
             10768 -> "War & Politics"
-            37 -> "Western"
             else -> "Genre"
         }
+    }
+
+    fun getYear(date: String): String {
+        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")).year.toString()
     }
 }

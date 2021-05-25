@@ -52,14 +52,14 @@
     </androidx.cardview.widget.CardView>
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_title_value"
         style="@style/TextAppearance.MaterialComponents.Headline6"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
-        android:ellipsize="end"
-        android:maxLines="1"
+        android:maxLines="2"
         android:text="@string/title"
+        android:textColor="@color/black"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/card_poster"
@@ -72,8 +72,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="4dp"
         android:textColor="@color/grey"
-        app:layout_constraintStart_toStartOf="@+id/tv_title"
-        app:layout_constraintTop_toBottomOf="@+id/tv_title"
+        app:layout_constraintStart_toStartOf="@+id/tv_title_value"
+        app:layout_constraintTop_toBottomOf="@+id/tv_title_value"
         tools:text="Year: 2020 | 4.8 " />
 
     <ImageView
@@ -106,7 +106,7 @@
         android:layout_marginTop="8dp"
         android:ellipsize="end"
         android:maxLines="7"
-        app:layout_constraintEnd_toEndOf="@+id/tv_title"
+        app:layout_constraintEnd_toEndOf="@+id/tv_title_value"
         app:layout_constraintStart_toStartOf="@+id/card_poster"
         app:layout_constraintTop_toBottomOf="@+id/tv_overview"
         tools:text="@tools:sample/lorem/random" />
@@ -114,35 +114,13 @@
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/genre_group"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:layout_height="0dp"
         android:layout_marginTop="16dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_overview_value"
-        app:singleLine="true">
-
-        <com.google.android.material.chip.Chip
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="16dp"
-            android:text="@string/genre" />
-
-        <com.google.android.material.chip.Chip
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/genre" />
-
-        <com.google.android.material.chip.Chip
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/genre" />
-
-        <com.google.android.material.chip.Chip
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/genre" />
-
-    </com.google.android.material.chip.ChipGroup>
+        android:layout_marginBottom="16dp"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/tv_title_value"
+        app:layout_constraintStart_toStartOf="@+id/card_poster"
+        app:layout_constraintTop_toBottomOf="@+id/tv_overview_value" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

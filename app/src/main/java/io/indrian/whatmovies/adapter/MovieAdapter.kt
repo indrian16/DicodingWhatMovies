@@ -47,7 +47,7 @@ class MovieAdapter(private val onItemCallbackListener: OnItemCallbackListener) :
                 tvTitle.text = movie.title
                 ratingBar.rating = AppUtils.getFiveStar(movie.voteAverage)
                 tvRating.text = movie.voteAverage.toString()
-                tvGenre.text = movie.genreIds.joinToString { AppUtils.getMovieGenre(it) }
+                tvGenre.text = movie.genreIds.joinToString { AppUtils.getGenreName(it) }
 
                 root.setOnClickListener {
                     onItemCallbackListener.onClickItem(movie)

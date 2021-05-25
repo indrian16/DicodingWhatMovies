@@ -4,11 +4,13 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import io.indrian.whatmovies.adapter.TVShowAdapter
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.databinding.FragmentTVShowBinding
+import io.indrian.whatmovies.ui.detail.DetailActivity
 
 class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
 
@@ -35,7 +37,9 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
     }
 
     override fun onClickItem(tvShows: TVShow) {
-
+        activity?.let {
+            DetailActivity.pushTVShow(it, tvShows)
+        }
     }
 
     override fun onDestroyView() {
