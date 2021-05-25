@@ -38,7 +38,7 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
 
     override fun onClickItem(tvShows: TVShow) {
         activity?.let {
-            DetailActivity.pushTVShow(it, tvShows)
+            DetailActivity.push(it, tvShows.id, false)
         }
     }
 

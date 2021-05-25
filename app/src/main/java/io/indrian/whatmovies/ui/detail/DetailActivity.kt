@@ -7,6 +7,7 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import io.indrian.whatmovies.R
 import io.indrian.whatmovies.data.models.Movie
@@ -21,20 +22,25 @@ class DetailActivity : AppCompatActivity() {
     private var _binding: ActivityDetailBinding? = null
     private val binding: ActivityDetailBinding get() = _binding!!
 
+    private var isMovie: Boolean = true
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupToolbar()
 
-        val movie = intent.getParcelableExtra<Movie>(MOVIE_EXTRA)
-        val tvShow = intent.getParcelableExtra<TVShow>(TV_SHOW_EXTRA)
+        // Setup ViewModel
+        val viewModel: DetailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[DetailViewModel::class.java]
 
-        if (movie != null) {
+        // Handle Type Detail
+        isMovie = intent?.getBooleanExtra(IS_MOVIE_EXTRA, true) ?: true
+        val id = intent?.getLongExtra(ID_EXTRA, 0L) ?: 0L
+        if (isMovie) {
+            val movie = viewModel.getDetailMovies(id)
             displayMovie(movie)
-        }
-
-        if (tvShow != null) {
+        } else {
+            val tvShow = viewModel.getDetailTVShow(id)
             displayTVShow(tvShow)
         }
     }
@@ -117,19 +123,16 @@ class DetailActivity : AppCompatActivity() {
     }
 
     companion object {
-        private const val MOVIE_EXTRA = "movie_extra"
-        private const val TV_SHOW_EXTRA = "tv_show_extra"
+        private const val ID_EXTRA = "id_extra"
+        private const val IS_MOVIE_EXTRA = "is_movie_extra"
 
-        fun pushMovie(activity: Activity, movie: Movie) {
-            val intent = Intent(activity, DetailActivity::class.java)
-            intent.putExtra(MOVIE_EXTRA, movie)
-            activity.startActivity(intent)
-        }
-
-        fun pushTVShow(activity: Activity, tvShow: TVShow) {
-            val intent = Intent(activity, DetailActivity::class.java)
-            intent.putExtra(TV_SHOW_EXTRA, tvShow)
-            activity.startActivity(intent)
+        fun push(activity: Activity, id: Long, isMovie: Boolean) {
+            Intent(activity, DetailActivity::class.java).apply {
+                putExtra(ID_EXTRA, id)
+                putExtra(IS_MOVIE_EXTRA, isMovie)
+            }.run {
+                activity.startActivity(this)
+            }
         }
     }
 }

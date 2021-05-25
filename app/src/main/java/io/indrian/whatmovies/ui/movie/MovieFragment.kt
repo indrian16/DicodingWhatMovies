@@ -37,7 +37,7 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
 
     override fun onClickItem(movie: Movie) {
         activity?.let {
-            DetailActivity.pushMovie(it, movie)
+            DetailActivity.push(it, movie.id, true)
         }
     }
 
