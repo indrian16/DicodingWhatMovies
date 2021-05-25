@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity
 import io.indrian.whatmovies.BuildConfig
 import io.indrian.whatmovies.databinding.ActivitySplashBinding
 import io.indrian.whatmovies.ui.main.MainActivity
+import io.indrian.whatmovies.utils.AppConstants
 
 class SplashActivity : AppCompatActivity() {
 
@@ -31,7 +32,7 @@ class SplashActivity : AppCompatActivity() {
 
         binding.tvVersion.text = "v${BuildConfig.VERSION_NAME}"
 
-        handler.postDelayed(runnable, 2000)
+        handler.postDelayed(runnable, AppConstants.SPLASH_DURATION)
     }
 
     override fun onDestroy() {
