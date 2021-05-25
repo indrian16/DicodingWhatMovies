@@ -23,13 +23,6 @@ class MainActivityTest {
     @get:Rule
     var activityRule = ActivityScenarioRule(MainActivity::class.java)
 
-//    @Test
-//    fun splashScreen() {
-//        onView(withId(R.id.splash_animation)).check(matches(isDisplayed()))
-//        onView(withId(R.id.splash_animation)).check(matches(isDisplayed()))
-//        onView(withId(R.id.tv_version)).check(matches(isDisplayed()))
-//    }
-
     @Test
     fun mainAction() {
         onView(withId(R.id.btn_start)).check(matches(isDisplayed()))
@@ -86,14 +79,4 @@ class MainActivityTest {
         onView(withId(R.id.btn_start)).check(matches(isDisplayed()))
         onView(withId(R.id.btn_start)).perform(click())
     }
-
-//    fun waitFor(delay: Long): ViewAction {
-//        return object : ViewAction {
-//            override fun getConstraints(): Matcher<View> = isRoot()
-//            override fun getDescription(): String = "wait for $delay milliseconds"
-//            override fun perform(uiController: androidx.test.espresso.UiController?, view: View?) {
-//                uiController?.loopMainThreadForAtLeast(delay)
-//            }
-//        }
-//    }
 }
