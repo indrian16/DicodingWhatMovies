@@ -3,7 +3,6 @@ package io.indrian.whatmovies.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.databinding.ItemLayoutBinding
 import io.indrian.whatmovies.di.GlideApp
