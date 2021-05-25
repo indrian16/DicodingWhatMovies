@@ -41,7 +41,6 @@ class DetailActivity : AppCompatActivity() {
 
     private fun setupToolbar() {
         // Set AppBar
-        supportActionBar?.hide()
         binding.appBar.outlineProvider = null
 
         // Set Toolbar
@@ -51,12 +50,17 @@ class DetailActivity : AppCompatActivity() {
             btnStart.setIconResource(R.drawable.ic_back)
             btnStart.setIconTintResource(R.color.white)
             btnStart.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(root.context, R.color.white))
+            btnEnd.setIconResource(R.drawable.ic_share)
             btnEnd.setIconTintResource(R.color.white)
             btnEnd.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(root.context, R.color.white))
 
             btnStart.setOnClickListener { finish() }
             btnEnd.setOnClickListener {  }
         }
+    }
+
+    private fun shareMovie() {
+
     }
 
     @SuppressLint("SetTextI18n")
