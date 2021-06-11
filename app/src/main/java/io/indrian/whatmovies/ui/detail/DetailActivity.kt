@@ -10,7 +10,6 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import io.indrian.whatmovies.R
-import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.databinding.ActivityDetailBinding
 import io.indrian.whatmovies.di.GlideApp
