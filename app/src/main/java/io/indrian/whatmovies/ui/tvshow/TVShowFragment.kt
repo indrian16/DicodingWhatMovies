@@ -12,11 +12,14 @@ import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.databinding.FragmentTVShowBinding
 import io.indrian.whatmovies.ui.detail.DetailActivity
 import io.indrian.whatmovies.utils.toast
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
 
     private var _binding: FragmentTVShowBinding? = null
     private val binding: FragmentTVShowBinding get() = _binding!!
+
+    private val viewModel: TVShowViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -29,7 +32,6 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[TVShowViewModel::class.java]
         //val tvShows = viewModel.getTVShows()
 
         val adapter = TVShowAdapter(this)
