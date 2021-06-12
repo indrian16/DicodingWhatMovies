@@ -12,6 +12,8 @@ data class TVShow(
     val firstAirDate: String = "",
     @Json(name = "genre_ids")
     val genreIds: List<Int> = listOf(),
+    @Json(name = "genres")
+    val genres: List<Genre> = listOf(),
     @Json(name = "id")
     val id: Long = 0,
     @Json(name = "name")

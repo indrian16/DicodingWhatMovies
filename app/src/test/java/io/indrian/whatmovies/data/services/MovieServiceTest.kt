@@ -1,6 +1,9 @@
 package io.indrian.whatmovies.data.services
 
 import io.indrian.whatmovies.utils.enqueueResponse
+import io.kotest.matchers.collections.shouldBeEmpty
+import io.kotest.matchers.collections.shouldNotBeEmpty
+import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldNotBeEmpty
@@ -44,6 +47,20 @@ class MovieServiceTest {
             movies[0].title.shouldBe("Cruella")
             movies[0].posterPath.shouldNotBeEmpty()
             movies[0].genreIds.shouldNotBeNull()
+        }
+    }
+
+    @Test
+    fun getDetailMovie() {
+        mockWebServer.enqueueResponse("success_detail_movie.json", 200)
+
+        runBlocking {
+            val movie = movieService.getDetailMovie(632357)
+            movie.shouldNotBeNull()
+            movie.title.shouldBe("The Unholy")
+            movie.posterPath.shouldNotBeEmpty()
+            movie.genres.shouldNotBeEmpty()
+            movie.genres[0].name.shouldBe("Horror")
         }
     }
 

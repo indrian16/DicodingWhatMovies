@@ -1,6 +1,7 @@
 package io.indrian.whatmovies.data.services
 
 import io.indrian.whatmovies.utils.enqueueResponse
+import io.kotest.matchers.collections.shouldNotBeEmpty
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldNotBeEmpty
@@ -44,6 +45,20 @@ class TVShowServiceTest {
             tvShows[0].name.shouldBe("Loki")
             tvShows[0].posterPath.shouldNotBeEmpty()
             tvShows[0].genreIds.shouldNotBeNull()
+        }
+    }
+
+    @Test
+    fun getDetailTVShow() {
+        mockWebServer.enqueueResponse("success_detail_tv_show.json", 200)
+
+        runBlocking {
+            val tvShow = tvShowService.getDetailTVShow(632357)
+            tvShow.shouldNotBeNull()
+            tvShow.name.shouldBe("Loki")
+            tvShow.posterPath.shouldNotBeEmpty()
+            tvShow.genres.shouldNotBeEmpty()
+            tvShow.genres[1].name.shouldBe("Sci-Fi & Fantasy")
         }
     }
 }
