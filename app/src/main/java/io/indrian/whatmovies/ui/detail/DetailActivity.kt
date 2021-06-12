@@ -40,6 +40,19 @@ class DetailActivity : AppCompatActivity() {
         }
     }
 
+    private val stateDetailTVShowObserver = Observer<CommonState<TVShow>> { state ->
+        when (state) {
+            is CommonState.Loading -> {
+
+            }
+            is CommonState.Empty -> {}
+            is CommonState.Loaded -> {
+                displayTVShow(state.data)
+            }
+            is CommonState.Error -> {}
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityDetailBinding.inflate(layoutInflater)
@@ -53,8 +66,8 @@ class DetailActivity : AppCompatActivity() {
             viewModel.getDetailMovies(id)
             viewModel.stateDetailMovie.observe(this, stateDetailMovieObserver)
         } else {
-            //val tvShow = viewModel.getDetailTVShow(id)
-            //displayTVShow(tvShow)
+            viewModel.getDetailTVShow(id)
+            viewModel.stateDetailTVShow.observe(this, stateDetailTVShowObserver)
         }
     }
 
@@ -154,6 +167,7 @@ class DetailActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.stateDetailMovie.removeObserver(stateDetailMovieObserver)
+        viewModel.stateDetailTVShow.removeObserver(stateDetailTVShowObserver)
         _binding = null
     }
 

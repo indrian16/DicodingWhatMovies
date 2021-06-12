@@ -13,5 +13,5 @@ class Repository(
 
     suspend fun getDetailMovies(id: Long): Movie? = remoteRepository.getDetailMovie(id)
 
-    suspend fun getDetailTVShow(id: Long): TVShow = remoteRepository.getDetailTVShow(id)
+    suspend fun getDetailTVShow(id: Long): TVShow? = remoteRepository.getDetailTVShow(id)
 }

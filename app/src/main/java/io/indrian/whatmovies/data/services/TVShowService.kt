@@ -12,5 +12,5 @@ interface TVShowService {
     suspend fun getTVShows(): ListResponse<TVShow>
 
     @GET("${AppConstants.TV_SHOW_ENDPOINT}/{id}")
-    suspend fun getDetailTVShow(@Path("id") id: Long): TVShow
+    suspend fun getDetailTVShow(@Path("id") id: Long): TVShow?
 }

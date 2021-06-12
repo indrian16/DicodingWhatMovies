@@ -21,10 +21,10 @@ class TVShowViewModel(private val repository: Repository) : ViewModel() {
         Timber.d("CommonState.Loading")
         viewModelScope.launch {
             try {
-                val movies = repository.getTVShows()
-                if (movies.isNotEmpty()) {
-                    _tvShowState.value = CommonState.Loaded(movies)
-                    Timber.d("CommonState.Loaded($movies)")
+                val tvShows = repository.getTVShows()
+                if (tvShows.isNotEmpty()) {
+                    _tvShowState.value = CommonState.Loaded(tvShows)
+                    Timber.d("CommonState.Loaded($tvShows)")
                 } else {
                     _tvShowState.value = CommonState.Empty
                     Timber.d("CommonState.Empty")
