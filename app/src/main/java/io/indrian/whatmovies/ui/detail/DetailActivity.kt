@@ -101,9 +101,9 @@ class DetailActivity : AppCompatActivity() {
             tvInformation.text = "${getString(R.string.year)}: ${AppUtils.getYear(movie.releaseDate)} | ${movie.voteAverage} "
             tvOverviewValue.text = movie.overview
 
-            movie.genreIds.map {
+            movie.genres.map {
                 Chip(this@DetailActivity).apply {
-                    text = AppUtils.getGenreName(it)
+                    text = it.name
                     setOnClickListener { toast(getString(R.string.coming_soon)) }
                 }
             }.forEach {
@@ -130,9 +130,9 @@ class DetailActivity : AppCompatActivity() {
             tvInformation.text = "${getString(R.string.year)}: ${AppUtils.getYear(tvShow.firstAirDate)} | ${tvShow.voteAverage} "
             tvOverviewValue.text = tvShow.overview
 
-            tvShow.genreIds.map {
+            tvShow.genres.map {
                 Chip(this@DetailActivity).apply {
-                    text = AppUtils.getGenreName(it)
+                    text = it.name
                     setOnClickListener { toast(getString(R.string.coming_soon)) }
                 }
             }.forEach {
