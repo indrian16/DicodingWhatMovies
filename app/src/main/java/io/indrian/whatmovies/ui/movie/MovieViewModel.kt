@@ -26,7 +26,7 @@ class MovieViewModel(private val repository: Repository) : ViewModel() {
                     Timber.d("CommonState.Loaded($movies)")
                 } else {
                     _movieState.value = CommonState.Empty
-                    Timber.d("")
+                    Timber.d("CommonState.Empty")
                 }
             } catch (e: Exception) {
                 e.printStackTrace()

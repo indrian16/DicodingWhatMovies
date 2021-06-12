@@ -5,12 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
 import io.indrian.whatmovies.R
 import io.indrian.whatmovies.adapter.TVShowAdapter
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.databinding.FragmentTVShowBinding
 import io.indrian.whatmovies.ui.detail.DetailActivity
+import io.indrian.whatmovies.utils.CommonState
 import io.indrian.whatmovies.utils.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -19,7 +20,22 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
     private var _binding: FragmentTVShowBinding? = null
     private val binding: FragmentTVShowBinding get() = _binding!!
 
+    private val adapter = TVShowAdapter(this)
+
     private val viewModel: TVShowViewModel by viewModel()
+
+    private val stateTVShowsObserver = Observer<CommonState<List<TVShow>>> { state ->
+        when (state) {
+            is CommonState.Loading -> {
+
+            }
+            is CommonState.Empty -> {}
+            is CommonState.Loaded -> {
+                adapter.add(state.data)
+            }
+            is CommonState.Error -> {}
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -31,11 +47,9 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getTVShows()
+        viewModel.tvShowState.observe(viewLifecycleOwner, stateTVShowsObserver)
 
-        //val tvShows = viewModel.getTVShows()
-
-        val adapter = TVShowAdapter(this)
-        //adapter.add(tvShows)
         binding.rvTvShow.adapter = adapter
     }
 
@@ -51,6 +65,7 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.tvShowState.removeObserver(stateTVShowsObserver)
         _binding = null
     }
 
