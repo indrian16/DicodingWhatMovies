@@ -5,11 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import io.indrian.whatmovies.R
 import io.indrian.whatmovies.adapter.MovieAdapter
 import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.databinding.FragmentMovieBinding
 import io.indrian.whatmovies.ui.detail.DetailActivity
+import io.indrian.whatmovies.utils.CommonState
 import io.indrian.whatmovies.utils.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -18,7 +20,22 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
     private var _binding: FragmentMovieBinding? = null
     private val binding: FragmentMovieBinding get() = _binding!!
 
+    private val adapter = MovieAdapter(this)
+
     private val viewModel: MovieViewModel by viewModel()
+
+    private val stateMovieObserver = Observer<CommonState<List<Movie>>> { state ->
+        when (state) {
+            is CommonState.Loading -> {
+
+            }
+            is CommonState.Empty -> {}
+            is CommonState.Loaded -> {
+                adapter.add(state.data)
+            }
+            is CommonState.Error -> {}
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -30,10 +47,9 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val movies = viewModel.getMovies()
+        viewModel.getMovies()
+        viewModel.movieState.observe(viewLifecycleOwner, stateMovieObserver)
 
-        val adapter = MovieAdapter(this)
-        //adapter.add(movies)
         binding.rvMovies.adapter = adapter
     }
 
@@ -49,6 +65,7 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.movieState.removeObserver(stateMovieObserver)
         _binding = null
     }
 
