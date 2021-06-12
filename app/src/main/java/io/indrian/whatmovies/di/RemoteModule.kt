@@ -2,6 +2,7 @@ package io.indrian.whatmovies.di
 
 import io.indrian.whatmovies.BuildConfig
 import io.indrian.whatmovies.data.services.MovieService
+import io.indrian.whatmovies.data.services.TVShowService
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -32,5 +33,6 @@ val remoteModule = module {
     }
 
     single { get<Retrofit>().create(MovieService::class.java) }
+    single { get<Retrofit>().create(TVShowService::class.java) }
 
 }
