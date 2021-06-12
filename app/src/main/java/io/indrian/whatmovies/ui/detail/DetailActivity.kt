@@ -7,6 +7,7 @@ import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
 import io.indrian.whatmovies.R
 import io.indrian.whatmovies.data.models.Movie
@@ -14,6 +15,7 @@ import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.databinding.ActivityDetailBinding
 import io.indrian.whatmovies.di.GlideApp
 import io.indrian.whatmovies.utils.AppUtils
+import io.indrian.whatmovies.utils.CommonState
 import io.indrian.whatmovies.utils.toGone
 import io.indrian.whatmovies.utils.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -25,21 +27,31 @@ class DetailActivity : AppCompatActivity() {
 
     private val viewModel: DetailViewModel by viewModel()
 
+    private val stateDetailMovieObserver = Observer<CommonState<Movie>> { state ->
+        when (state) {
+            is CommonState.Loading -> {
+
+            }
+            is CommonState.Empty -> {}
+            is CommonState.Loaded -> {
+                displayMovie(state.data)
+            }
+            is CommonState.Error -> {}
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         _binding = ActivityDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
         setupToolbar()
 
-        // Setup ViewModel
-        //val viewModel: DetailViewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[DetailViewModel::class.java]
-
         // Handle Type Detail
         val isMovie = intent?.getBooleanExtra(IS_MOVIE_EXTRA, true) ?: true
         val id = intent?.getLongExtra(ID_EXTRA, 0L) ?: 0L
         if (isMovie) {
-            //val movie = viewModel.getDetailMovies(id)
-            //displayMovie(movie)
+            viewModel.getDetailMovies(id)
+            viewModel.stateDetailMovie.observe(this, stateDetailMovieObserver)
         } else {
             //val tvShow = viewModel.getDetailTVShow(id)
             //displayTVShow(tvShow)
@@ -141,6 +153,7 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
+        viewModel.stateDetailMovie.removeObserver(stateDetailMovieObserver)
         _binding = null
     }
 

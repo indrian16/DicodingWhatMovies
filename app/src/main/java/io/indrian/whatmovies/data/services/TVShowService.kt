@@ -8,7 +8,7 @@ import retrofit2.http.Path
 
 interface TVShowService {
 
-    @GET(AppConstants.TV_SHOW_ENDPOINT)
+    @GET("${AppConstants.TV_SHOW_ENDPOINT}/popular")
     suspend fun getTVShows(): ListResponse<TVShow>
 
     @GET("${AppConstants.TV_SHOW_ENDPOINT}/{id}")

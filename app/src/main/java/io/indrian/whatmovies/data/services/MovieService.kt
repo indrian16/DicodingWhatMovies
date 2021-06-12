@@ -8,9 +8,9 @@ import retrofit2.http.Path
 
 interface MovieService {
 
-    @GET(AppConstants.MOVIE_ENDPOINT)
+    @GET("${AppConstants.MOVIE_ENDPOINT}/popular")
     suspend fun getMovies(): ListResponse<Movie>
 
     @GET("${AppConstants.MOVIE_ENDPOINT}/{id}")
-    suspend fun getDetailMovie(@Path("id") id: Long): Movie
+    suspend fun getDetailMovie(@Path("id") id: Long): Movie?
 }

@@ -11,7 +11,7 @@ class Repository(
 
     suspend fun getTVShows(): List<TVShow> = remoteRepository.getTVShows().results
 
-    suspend fun getDetailMovies(id: Long): Movie = remoteRepository.getDetailMovie(id)
+    suspend fun getDetailMovies(id: Long): Movie? = remoteRepository.getDetailMovie(id)
 
     suspend fun getDetailTVShow(id: Long): TVShow = remoteRepository.getDetailTVShow(id)
 }
