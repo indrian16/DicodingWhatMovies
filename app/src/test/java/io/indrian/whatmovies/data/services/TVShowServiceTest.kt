@@ -12,19 +12,19 @@ import org.junit.Test
 import retrofit2.Retrofit
 import retrofit2.converter.moshi.MoshiConverterFactory
 
-class MovieServiceTest {
+class TVShowServiceTest {
 
     private lateinit var mockWebServer: MockWebServer
-    private lateinit var movieService: MovieService
+    private lateinit var tvShowService: TVShowService
 
     @Before
     fun setUp() {
         mockWebServer = MockWebServer()
-        movieService = Retrofit.Builder()
+        tvShowService = Retrofit.Builder()
             .baseUrl(mockWebServer.url(""))
             .addConverterFactory(MoshiConverterFactory.create())
             .build()
-            .create(MovieService::class.java)
+            .create(TVShowService::class.java)
     }
 
     @After
@@ -33,18 +33,17 @@ class MovieServiceTest {
     }
 
     @Test
-    fun getMovies() {
-        mockWebServer.enqueueResponse("success_movies.json", 200)
+    fun getTVShows() {
+        mockWebServer.enqueueResponse("success_tv_show.json", 200)
 
         runBlocking {
-            val responses = movieService.getMovies()
-            val movies = responses.results
+            val responses = tvShowService.getTVShows()
+            val tvShows = responses.results
             responses.shouldNotBeNull()
-            movies.size.shouldBe(20)
-            movies[0].title.shouldBe("Cruella")
-            movies[0].posterPath.shouldNotBeEmpty()
-            movies[0].genreIds.shouldNotBeNull()
+            tvShows.size.shouldBe(20)
+            tvShows[0].name.shouldBe("Loki")
+            tvShows[0].posterPath.shouldNotBeEmpty()
+            tvShows[0].genreIds.shouldNotBeNull()
         }
     }
-
 }
