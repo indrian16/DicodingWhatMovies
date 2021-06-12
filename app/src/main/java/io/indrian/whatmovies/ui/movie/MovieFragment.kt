@@ -5,18 +5,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
 import io.indrian.whatmovies.R
 import io.indrian.whatmovies.adapter.MovieAdapter
 import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.databinding.FragmentMovieBinding
 import io.indrian.whatmovies.ui.detail.DetailActivity
 import io.indrian.whatmovies.utils.toast
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
 
     private var _binding: FragmentMovieBinding? = null
     private val binding: FragmentMovieBinding get() = _binding!!
+
+    private val viewModel: MovieViewModel by viewModel()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,12 +30,10 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
-        val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[MovieViewModel::class.java]
         val movies = viewModel.getMovies()
 
         val adapter = MovieAdapter(this)
-        adapter.add(movies)
+        //adapter.add(movies)
         binding.rvMovies.adapter = adapter
     }
 

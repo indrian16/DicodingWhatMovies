@@ -30,10 +30,10 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
         super.onViewCreated(view, savedInstanceState)
 
         val viewModel = ViewModelProvider(this, ViewModelProvider.NewInstanceFactory())[TVShowViewModel::class.java]
-        val tvShows = viewModel.getTVShows()
+        //val tvShows = viewModel.getTVShows()
 
         val adapter = TVShowAdapter(this)
-        adapter.add(tvShows)
+        //adapter.add(tvShows)
         binding.rvTvShow.adapter = adapter
     }
 

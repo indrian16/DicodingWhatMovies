@@ -36,11 +36,11 @@ class DetailActivity : AppCompatActivity() {
         val isMovie = intent?.getBooleanExtra(IS_MOVIE_EXTRA, true) ?: true
         val id = intent?.getLongExtra(ID_EXTRA, 0L) ?: 0L
         if (isMovie) {
-            val movie = viewModel.getDetailMovies(id)
-            displayMovie(movie)
+            //val movie = viewModel.getDetailMovies(id)
+            //displayMovie(movie)
         } else {
-            val tvShow = viewModel.getDetailTVShow(id)
-            displayTVShow(tvShow)
+            //val tvShow = viewModel.getDetailTVShow(id)
+            //displayTVShow(tvShow)
         }
     }
 
