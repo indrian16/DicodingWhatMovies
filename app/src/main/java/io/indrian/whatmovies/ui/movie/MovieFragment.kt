@@ -12,6 +12,7 @@ import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.databinding.FragmentMovieBinding
 import io.indrian.whatmovies.ui.detail.DetailActivity
 import io.indrian.whatmovies.utils.CommonState
+import io.indrian.whatmovies.utils.Event
 import io.indrian.whatmovies.utils.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -42,6 +43,14 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
         }
     }
 
+    private val eventOpenDetailMovieObserver = Observer<Event<Long>> { event ->
+        activity?.let {
+            event.getContentIfNotHandled()?.let { id ->
+                DetailActivity.push(it, id, true)
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,15 +63,14 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getMovies()
         viewModel.movieState.observe(viewLifecycleOwner, stateMovieObserver)
+        viewModel.eventOpenDetailMovie.observe(viewLifecycleOwner, eventOpenDetailMovieObserver)
 
         binding.rvMovies.adapter = adapter
         binding.swipeMovie.setOnRefreshListener { viewModel.getMovies() }
     }
 
     override fun onClickItem(movie: Movie) {
-        activity?.let {
-            DetailActivity.push(it, movie.id, true)
-        }
+        viewModel.openDetailMovie(movie.id)
     }
 
     override fun onWhiteList(movie: Movie) {
@@ -72,6 +80,7 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.movieState.removeObserver(stateMovieObserver)
+        viewModel.eventOpenDetailMovie.removeObserver(eventOpenDetailMovieObserver)
         _binding = null
     }
 

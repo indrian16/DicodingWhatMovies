@@ -12,6 +12,7 @@ import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.databinding.FragmentTVShowBinding
 import io.indrian.whatmovies.ui.detail.DetailActivity
 import io.indrian.whatmovies.utils.CommonState
+import io.indrian.whatmovies.utils.Event
 import io.indrian.whatmovies.utils.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
@@ -42,6 +43,14 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
         }
     }
 
+    private val eventOpenDetailTVShowObserver = Observer<Event<Long>> { event ->
+        activity?.let {
+            event.getContentIfNotHandled()?.let { id ->
+                DetailActivity.push(it, id, false)
+            }
+        }
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -54,15 +63,14 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
         super.onViewCreated(view, savedInstanceState)
         viewModel.getTVShows()
         viewModel.tvShowState.observe(viewLifecycleOwner, stateTVShowsObserver)
+        viewModel.eventOpenDetailTVShow.observe(viewLifecycleOwner, eventOpenDetailTVShowObserver)
 
         binding.rvTvShow.adapter = adapter
         binding.swipeTvShow.setOnRefreshListener { viewModel.getTVShows() }
     }
 
     override fun onClickItem(tvShows: TVShow) {
-        activity?.let {
-            DetailActivity.push(it, tvShows.id, false)
-        }
+        viewModel.openDetailTVShow(tvShows.id)
     }
 
     override fun onWhiteList(tvShows: TVShow) {
@@ -72,6 +80,7 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
     override fun onDestroyView() {
         super.onDestroyView()
         viewModel.tvShowState.removeObserver(stateTVShowsObserver)
+        viewModel.eventOpenDetailTVShow.removeObserver(eventOpenDetailTVShowObserver)
         _binding = null
     }
 

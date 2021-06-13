@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.data.repositories.Repository
 import io.indrian.whatmovies.utils.CommonState
+import io.indrian.whatmovies.utils.Event
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -15,6 +15,9 @@ class TVShowViewModel(private val repository: Repository) : ViewModel() {
 
     private val _tvShowState = MutableLiveData<CommonState<List<TVShow>>>()
     val tvShowState: LiveData<CommonState<List<TVShow>>> get() = _tvShowState
+
+    private val _eventOpenDetailTVShow = MutableLiveData<Event<Long>>()
+    val eventOpenDetailTVShow: LiveData<Event<Long>> get() = _eventOpenDetailTVShow
 
     fun getTVShows() {
         _tvShowState.value = CommonState.Loading
@@ -35,5 +38,9 @@ class TVShowViewModel(private val repository: Repository) : ViewModel() {
                 Timber.d("CommonState.Error(${e.message})")
             }
         }
+    }
+
+    fun openDetailTVShow(id: Long) {
+        _eventOpenDetailTVShow.value = Event(id)
     }
 }
