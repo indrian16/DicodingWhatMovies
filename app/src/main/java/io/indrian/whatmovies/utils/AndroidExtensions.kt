@@ -16,3 +16,7 @@ fun Fragment.toast(message: String) {
 fun View.toGone() {
     visibility = View.GONE
 }
+
+fun View.toVisible() {
+    visibility = View.VISIBLE
+}

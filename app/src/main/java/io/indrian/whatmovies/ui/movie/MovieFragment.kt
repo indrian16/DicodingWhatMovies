@@ -1,5 +1,6 @@
 package io.indrian.whatmovies.ui.movie
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,9 +12,7 @@ import io.indrian.whatmovies.adapter.MovieAdapter
 import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.databinding.FragmentMovieBinding
 import io.indrian.whatmovies.ui.detail.DetailActivity
-import io.indrian.whatmovies.utils.CommonState
-import io.indrian.whatmovies.utils.Event
-import io.indrian.whatmovies.utils.toast
+import io.indrian.whatmovies.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
@@ -25,20 +24,34 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
 
     private val viewModel: MovieViewModel by viewModel()
 
+    @SuppressLint("SetTextI18n")
     private val stateMovieObserver = Observer<CommonState<List<Movie>>> { state ->
         when (state) {
             is CommonState.Loading -> {
                 binding.swipeMovie.isRefreshing = true
+                binding.rvMovies.toGone()
+                binding.errorEmptyLayout.root.toGone()
             }
             is CommonState.Empty -> {
                 binding.swipeMovie.isRefreshing = false
+                binding.rvMovies.toGone()
+                binding.errorEmptyLayout.root.toVisible()
+
+                binding.errorEmptyLayout.tvMessage.text = getString(R.string.empty_data)
             }
             is CommonState.Loaded -> {
                 binding.swipeMovie.isRefreshing = false
+                binding.rvMovies.toVisible()
+                binding.errorEmptyLayout.root.toGone()
+
                 adapter.add(state.data)
             }
             is CommonState.Error -> {
                 binding.swipeMovie.isRefreshing = false
+                binding.rvMovies.toGone()
+                binding.errorEmptyLayout.root.toVisible()
+
+                binding.errorEmptyLayout.tvMessage.text = state.message
             }
         }
     }

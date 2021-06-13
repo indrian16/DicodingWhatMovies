@@ -7,12 +7,23 @@
     tools:context=".ui.tvshow.TVShowFragment"
     android:id="@+id/swipe_tv_show">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_tv_show"
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-        tools:listitem="@layout/item_layout"/>
+        android:layout_height="match_parent">
+
+        <include
+            android:visibility="gone"
+            android:id="@+id/error_empty_layout"
+            layout="@layout/error_empty_layout"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_tv_show"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            tools:listitem="@layout/item_layout"/>
+
+    </RelativeLayout>
 
 </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

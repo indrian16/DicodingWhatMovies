@@ -11,9 +11,7 @@ import io.indrian.whatmovies.adapter.TVShowAdapter
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.databinding.FragmentTVShowBinding
 import io.indrian.whatmovies.ui.detail.DetailActivity
-import io.indrian.whatmovies.utils.CommonState
-import io.indrian.whatmovies.utils.Event
-import io.indrian.whatmovies.utils.toast
+import io.indrian.whatmovies.utils.*
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
@@ -29,16 +27,27 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
         when (state) {
             is CommonState.Loading -> {
                 binding.swipeTvShow.isRefreshing = true
+                binding.rvTvShow.toGone()
+                binding.errorEmptyLayout.root.toGone()
             }
             is CommonState.Empty -> {
                 binding.swipeTvShow.isRefreshing = false
+                binding.rvTvShow.toGone()
+                binding.errorEmptyLayout.root.toVisible()
             }
             is CommonState.Loaded -> {
                 binding.swipeTvShow.isRefreshing = false
+                binding.rvTvShow.toVisible()
+                binding.errorEmptyLayout.root.toGone()
+
                 adapter.add(state.data)
             }
             is CommonState.Error -> {
                 binding.swipeTvShow.isRefreshing = false
+                binding.rvTvShow.toGone()
+                binding.errorEmptyLayout.root.toVisible()
+
+                binding.errorEmptyLayout.tvMessage.text = state.message
             }
         }
     }
