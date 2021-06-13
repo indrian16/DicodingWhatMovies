@@ -14,6 +14,7 @@ import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.databinding.ActivityDetailBinding
 import io.indrian.whatmovies.di.GlideApp
+import io.indrian.whatmovies.ui.main.LoadingDialogFragment
 import io.indrian.whatmovies.utils.AppUtils
 import io.indrian.whatmovies.utils.CommonState
 import io.indrian.whatmovies.utils.toGone
@@ -27,29 +28,42 @@ class DetailActivity : AppCompatActivity() {
 
     private val viewModel: DetailViewModel by viewModel()
 
+    private val loadingDialogFragment = LoadingDialogFragment.newInstance()
     private val stateDetailMovieObserver = Observer<CommonState<Movie>> { state ->
         when (state) {
             is CommonState.Loading -> {
-
+                loadingDialogFragment.show(supportFragmentManager, LoadingDialogFragment.TAG)
             }
-            is CommonState.Empty -> {}
+            is CommonState.Empty -> {
+                loadingDialogFragment.dismiss()
+            }
             is CommonState.Loaded -> {
+                loadingDialogFragment.dismiss()
                 displayMovie(state.data)
             }
-            is CommonState.Error -> {}
+            is CommonState.Error -> {
+                loadingDialogFragment.dismiss()
+                toast(state.message)
+            }
         }
     }
 
     private val stateDetailTVShowObserver = Observer<CommonState<TVShow>> { state ->
         when (state) {
             is CommonState.Loading -> {
-
+                loadingDialogFragment.show(supportFragmentManager, LoadingDialogFragment.TAG)
             }
-            is CommonState.Empty -> {}
+            is CommonState.Empty -> {
+                loadingDialogFragment.dismiss()
+            }
             is CommonState.Loaded -> {
+                loadingDialogFragment.dismiss()
                 displayTVShow(state.data)
             }
-            is CommonState.Error -> {}
+            is CommonState.Error -> {
+                loadingDialogFragment.dismiss()
+                toast(state.message)
+            }
         }
     }
 

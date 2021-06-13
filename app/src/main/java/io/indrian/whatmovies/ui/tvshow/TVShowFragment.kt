@@ -27,13 +27,18 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
     private val stateTVShowsObserver = Observer<CommonState<List<TVShow>>> { state ->
         when (state) {
             is CommonState.Loading -> {
-
+                binding.swipeTvShow.isRefreshing = true
             }
-            is CommonState.Empty -> {}
+            is CommonState.Empty -> {
+                binding.swipeTvShow.isRefreshing = false
+            }
             is CommonState.Loaded -> {
+                binding.swipeTvShow.isRefreshing = false
                 adapter.add(state.data)
             }
-            is CommonState.Error -> {}
+            is CommonState.Error -> {
+                binding.swipeTvShow.isRefreshing = false
+            }
         }
     }
 
@@ -51,6 +56,7 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
         viewModel.tvShowState.observe(viewLifecycleOwner, stateTVShowsObserver)
 
         binding.rvTvShow.adapter = adapter
+        binding.swipeTvShow.setOnRefreshListener { viewModel.getTVShows() }
     }
 
     override fun onClickItem(tvShows: TVShow) {

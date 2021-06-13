@@ -27,13 +27,18 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
     private val stateMovieObserver = Observer<CommonState<List<Movie>>> { state ->
         when (state) {
             is CommonState.Loading -> {
-
+                binding.swipeMovie.isRefreshing = true
             }
-            is CommonState.Empty -> {}
+            is CommonState.Empty -> {
+                binding.swipeMovie.isRefreshing = false
+            }
             is CommonState.Loaded -> {
+                binding.swipeMovie.isRefreshing = false
                 adapter.add(state.data)
             }
-            is CommonState.Error -> {}
+            is CommonState.Error -> {
+                binding.swipeMovie.isRefreshing = false
+            }
         }
     }
 
@@ -51,6 +56,7 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
         viewModel.movieState.observe(viewLifecycleOwner, stateMovieObserver)
 
         binding.rvMovies.adapter = adapter
+        binding.swipeMovie.setOnRefreshListener { viewModel.getMovies() }
     }
 
     override fun onClickItem(movie: Movie) {
