@@ -106,9 +106,11 @@ class DetailActivity : AppCompatActivity() {
         with(binding) {
             GlideApp.with(this@DetailActivity)
                 .load(AppUtils.getImagePath(movie.backdropPath))
+                .error(R.drawable.ic_launcher_foreground)
                 .into(imageBackdrop)
             GlideApp.with(this@DetailActivity)
                 .load(AppUtils.getImagePath(movie.posterPath))
+                .error(R.drawable.ic_launcher_foreground)
                 .into(imagePoster)
 
             tvTitleValue.text = movie.title
@@ -135,9 +137,11 @@ class DetailActivity : AppCompatActivity() {
         with(binding) {
             GlideApp.with(this@DetailActivity)
                 .load(AppUtils.getImagePath(tvShow.backdropPath))
+                .error(R.drawable.ic_launcher_foreground)
                 .into(imageBackdrop)
             GlideApp.with(this@DetailActivity)
                 .load(AppUtils.getImagePath(tvShow.posterPath))
+                .error(R.drawable.ic_launcher_foreground)
                 .into(imagePoster)
 
             tvTitleValue.text = tvShow.name

@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter
 
 object AppUtils {
 
-    fun getImagePath(path: String): String {
+    fun getImagePath(path: String? = ""): String {
         return "https://image.tmdb.org/t/p/w500$path"
     }
 

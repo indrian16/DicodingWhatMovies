@@ -8,9 +8,9 @@ class RemoteRepository(
     private val tvShowService: TVShowService
 ){
 
-    suspend fun getMovies() = movieService.getMovies()
+    suspend fun getMovies(page: Int = 1) = movieService.getMovies(page)
     suspend fun getDetailMovie(id: Long) = movieService.getDetailMovie(id)
 
-    suspend fun getTVShows() = tvShowService.getTVShows()
+    suspend fun getTVShows(page: Int = 1) = tvShowService.getTVShows(page)
     suspend fun getDetailTVShow(id: Long) = tvShowService.getDetailTVShow(id)
 }

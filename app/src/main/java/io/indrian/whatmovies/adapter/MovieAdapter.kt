@@ -3,6 +3,7 @@ package io.indrian.whatmovies.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import io.indrian.whatmovies.R
 import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.databinding.ItemLayoutBinding
 import io.indrian.whatmovies.di.GlideApp
@@ -43,6 +44,7 @@ class MovieAdapter(private val onItemCallbackListener: OnItemCallbackListener) :
             with(itemBinding) {
                 GlideApp.with(this.root)
                     .load(AppUtils.getImagePath(movie.posterPath))
+                    .error(R.drawable.ic_launcher_foreground)
                     .into(imagePoster)
 
                 tvTitle.text = movie.title

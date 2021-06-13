@@ -7,7 +7,7 @@ import com.squareup.moshi.JsonClass
 @JsonClass(generateAdapter = true)
 data class TVShow(
     @Json(name = "backdrop_path")
-    val backdropPath: String = "",
+    val backdropPath: String? = "",
     @Json(name = "first_air_date")
     val firstAirDate: String = "",
     @Json(name = "genre_ids")
@@ -29,7 +29,7 @@ data class TVShow(
     @Json(name = "popularity")
     val popularity: Double = 0.0,
     @Json(name = "poster_path")
-    val posterPath: String = "",
+    val posterPath: String? = "",
     @Json(name = "vote_average")
     val voteAverage: Double = 0.0,
     @Json(name = "vote_count")

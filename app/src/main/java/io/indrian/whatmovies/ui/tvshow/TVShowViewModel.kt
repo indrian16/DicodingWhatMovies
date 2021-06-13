@@ -24,7 +24,7 @@ class TVShowViewModel(private val repository: Repository) : ViewModel() {
         Timber.d("CommonState.Loading")
         viewModelScope.launch {
             try {
-                val tvShows = repository.getTVShows()
+                val tvShows = repository.getTVShows(page = (1..600).random())
                 if (tvShows.isNotEmpty()) {
                     _tvShowState.value = CommonState.Loaded(tvShows)
                     Timber.d("CommonState.Loaded($tvShows)")
