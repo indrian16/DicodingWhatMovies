@@ -8,9 +8,10 @@ import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.data.repositories.Repository
 import io.indrian.whatmovies.utils.CommonState
 import io.indrian.whatmovies.utils.Event
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
-import kotlin.random.Random
 
 class MovieViewModel(private val repository: Repository) : ViewModel() {
 
@@ -23,7 +24,7 @@ class MovieViewModel(private val repository: Repository) : ViewModel() {
     fun getMovies() {
         _movieState.value = CommonState.Loading
         Timber.d("CommonState.Loading")
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             try {
                 val movies = repository.getMovies(page = (0..600).random())
                 if (movies.isNotEmpty()) {

@@ -1,23 +1,45 @@
 package io.indrian.whatmovies.ui.movie
 
-import io.kotest.matchers.collections.shouldNotBeEmpty
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import io.indrian.whatmovies.data.repositories.Repository
+import io.indrian.whatmovies.utils.CommonState
+import io.indrian.whatmovies.utils.CoroutinesTestRule
+import io.indrian.whatmovies.utils.getOrAwaitValue
 import io.kotest.matchers.shouldBe
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
+
 
 class MovieViewModelTest {
 
+    @Rule @JvmField
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @ExperimentalCoroutinesApi
+    @get:Rule
+    val coroutinesTestRule = CoroutinesTestRule()
+
+    @RelaxedMockK
+    lateinit var repository: Repository
+
     private lateinit var viewModel: MovieViewModel
 
+    @ExperimentalCoroutinesApi
     @Before
     fun setUp() {
-        viewModel = MovieViewModel()
+        MockKAnnotations.init(this)
+        viewModel = MovieViewModel(repository)
     }
 
+    @ExperimentalCoroutinesApi
     @Test
-    fun getMovies() {
-        val movies = viewModel.getMovies()
-        movies.shouldNotBeEmpty()
-        movies.size.shouldBe(15)
+    fun getMovies() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        viewModel.getMovies()
+        viewModel.movieState.getOrAwaitValue().shouldBe(CommonState.Loading)
     }
 }

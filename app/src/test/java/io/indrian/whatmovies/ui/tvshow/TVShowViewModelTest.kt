@@ -1,23 +1,32 @@
 package io.indrian.whatmovies.ui.tvshow
 
+import io.indrian.whatmovies.data.repositories.Repository
+import io.indrian.whatmovies.utils.DummyData
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
-import org.junit.Before
+import kotlinx.coroutines.runBlocking
 import org.junit.Test
+import org.junit.runner.RunWith
+import org.mockito.Mock
+import org.mockito.Mockito.`when`
+import org.mockito.Mockito.verify
+import org.mockito.junit.MockitoJUnitRunner
 
+@RunWith(MockitoJUnitRunner::class)
 class TVShowViewModelTest {
 
-    private lateinit var viewModel: TVShowViewModel
-
-    @Before
-    fun setUp() {
-        viewModel = TVShowViewModel()
-    }
+    @Mock
+    private lateinit var repository: Repository
 
     @Test
     fun getTVShows() {
-        val tvShows = viewModel.getTVShows()
-        tvShows.shouldNotBeNull()
-        tvShows.size.shouldBe(15)
+        runBlocking {
+            `when`(repository.getTVShows()).thenReturn(DummyData.getTVShows())
+            val tvShows = repository.getTVShows()
+            verify(repository).getTVShows()
+
+            tvShows.shouldNotBeNull()
+            tvShows.size.shouldBe(15)
+        }
     }
 }
