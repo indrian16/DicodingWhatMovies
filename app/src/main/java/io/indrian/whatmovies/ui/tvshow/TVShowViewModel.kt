@@ -8,6 +8,7 @@ import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.data.repositories.Repository
 import io.indrian.whatmovies.utils.CommonState
 import io.indrian.whatmovies.utils.Event
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -22,7 +23,7 @@ class TVShowViewModel(private val repository: Repository) : ViewModel() {
     fun getTVShows() {
         _tvShowState.value = CommonState.Loading
         Timber.d("CommonState.Loading")
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             try {
                 val tvShows = repository.getTVShows(page = (1..600).random())
                 if (tvShows.isNotEmpty()) {

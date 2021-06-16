@@ -8,6 +8,7 @@ import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.data.repositories.Repository
 import io.indrian.whatmovies.utils.CommonState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -22,7 +23,7 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
     fun getDetailMovies(id: Long) {
         _stateDetailMovie.value = CommonState.Loading
         Timber.d("CommonState.Loading")
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             try {
                 val movies = repository.getDetailMovies(id)
                 if (movies != null) {
@@ -43,7 +44,7 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
     fun getDetailTVShow(id: Long) {
         _stateDetailTVShow.value = CommonState.Loading
         Timber.d("CommonState.Loading")
-        viewModelScope.launch {
+        viewModelScope.launch(Dispatchers.Default) {
             try {
                 val tvShow = repository.getDetailTVShow(id)
                 if (tvShow != null) {

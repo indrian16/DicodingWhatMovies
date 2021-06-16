@@ -1,32 +1,45 @@
 package io.indrian.whatmovies.ui.tvshow
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import io.indrian.whatmovies.data.repositories.Repository
-import io.indrian.whatmovies.utils.DummyData
-import io.kotest.matchers.nulls.shouldNotBeNull
+import io.indrian.whatmovies.utils.CommonState
+import io.indrian.whatmovies.utils.CoroutinesTestRule
+import io.indrian.whatmovies.utils.getOrAwaitValue
 import io.kotest.matchers.shouldBe
-import kotlinx.coroutines.runBlocking
+import io.mockk.MockKAnnotations
+import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
+import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
-import org.mockito.Mock
-import org.mockito.Mockito.`when`
-import org.mockito.Mockito.verify
-import org.mockito.junit.MockitoJUnitRunner
 
-@RunWith(MockitoJUnitRunner::class)
 class TVShowViewModelTest {
 
-    @Mock
-    private lateinit var repository: Repository
+    @Rule
+    @JvmField
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
+    @ExperimentalCoroutinesApi
+    @get:Rule
+    val coroutinesTestRule = CoroutinesTestRule()
+
+    @RelaxedMockK
+    lateinit var repository: Repository
+
+    private lateinit var viewModel: TVShowViewModel
+
+    @ExperimentalCoroutinesApi
+    @Before
+    fun setUp() {
+        MockKAnnotations.init(this)
+        viewModel = TVShowViewModel(repository)
+    }
+
+    @ExperimentalCoroutinesApi
     @Test
-    fun getTVShows() {
-        runBlocking {
-            `when`(repository.getTVShows()).thenReturn(DummyData.getTVShows())
-            val tvShows = repository.getTVShows()
-            verify(repository).getTVShows()
-
-            tvShows.shouldNotBeNull()
-            tvShows.size.shouldBe(15)
-        }
+    fun getTVShows() = coroutinesTestRule.testDispatcher.runBlockingTest {
+        viewModel.getTVShows()
+        viewModel.tvShowState.getOrAwaitValue().shouldBe(CommonState.Loading)
     }
 }
