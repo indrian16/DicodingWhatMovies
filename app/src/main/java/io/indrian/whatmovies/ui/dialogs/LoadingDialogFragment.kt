@@ -1,4 +1,4 @@
-package io.indrian.whatmovies.ui.main
+package io.indrian.whatmovies.ui.dialogs
 
 import android.os.Bundle
 import android.view.Gravity
