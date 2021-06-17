@@ -8,6 +8,7 @@ import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.data.repositories.Repository
 import io.indrian.whatmovies.utils.CommonState
+import io.indrian.whatmovies.utils.EspressoIdlingResource
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -21,6 +22,7 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
     val stateDetailTVShow: LiveData<CommonState<TVShow>> get() = _stateDetailTVShow
 
     fun getDetailMovies(id: Long) {
+        EspressoIdlingResource.increment()
         _stateDetailMovie.value = CommonState.Loading
         Timber.d("CommonState.Loading")
         viewModelScope.launch {
@@ -29,6 +31,7 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
                 if (movies != null) {
                     _stateDetailMovie.value = CommonState.Loaded(movies)
                     Timber.d("CommonState.Loaded($movies)")
+                    EspressoIdlingResource.decrement()
                 } else {
                     _stateDetailMovie.value = CommonState.Empty
                     Timber.d("CommonState.Empty")
@@ -44,7 +47,7 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
     fun getDetailTVShow(id: Long) {
         _stateDetailTVShow.value = CommonState.Loading
         Timber.d("CommonState.Loading")
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             try {
                 val tvShow = repository.getDetailTVShow(id)
                 if (tvShow != null) {

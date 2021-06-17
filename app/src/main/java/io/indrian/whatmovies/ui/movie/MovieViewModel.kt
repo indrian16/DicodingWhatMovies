@@ -7,9 +7,8 @@ import androidx.lifecycle.viewModelScope
 import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.data.repositories.Repository
 import io.indrian.whatmovies.utils.CommonState
+import io.indrian.whatmovies.utils.EspressoIdlingResource
 import io.indrian.whatmovies.utils.Event
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
@@ -22,14 +21,16 @@ class MovieViewModel(private val repository: Repository) : ViewModel() {
     val eventOpenDetailMovie: LiveData<Event<Long>> get() = _eventOpenDetailMovie
 
     fun getMovies() {
+        EspressoIdlingResource.increment()
         _movieState.value = CommonState.Loading
         Timber.d("CommonState.Loading")
         viewModelScope.launch {
             try {
-                val movies = repository.getMovies(page = (0..600).random())
+                val movies = repository.getMovies(page = 1)
                 if (movies.isNotEmpty()) {
                     _movieState.value = CommonState.Loaded(movies)
                     Timber.d("CommonState.Loaded($movies)")
+                    EspressoIdlingResource.decrement()
                 } else {
                     _movieState.value = CommonState.Empty
                     Timber.d("CommonState.Empty")
