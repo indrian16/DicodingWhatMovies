@@ -23,7 +23,7 @@ class DetailViewModel(private val repository: Repository) : ViewModel() {
     fun getDetailMovies(id: Long) {
         _stateDetailMovie.value = CommonState.Loading
         Timber.d("CommonState.Loading")
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             try {
                 val movies = repository.getDetailMovies(id)
                 if (movies != null) {

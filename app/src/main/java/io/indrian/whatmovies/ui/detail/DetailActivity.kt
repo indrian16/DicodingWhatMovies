@@ -3,15 +3,21 @@ package io.indrian.whatmovies.ui.detail
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Intent
+import android.content.res.ColorStateList
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.Observer
+import com.google.android.material.chip.Chip
 import io.indrian.whatmovies.R
 import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.databinding.ActivityDetailBinding
+import io.indrian.whatmovies.di.GlideApp
 import io.indrian.whatmovies.ui.dialogs.LoadingDialogFragment
+import io.indrian.whatmovies.utils.AppUtils
 import io.indrian.whatmovies.utils.CommonState
+import io.indrian.whatmovies.utils.toGone
 import io.indrian.whatmovies.utils.toast
 import org.koin.androidx.viewmodel.ext.android.viewModel
 

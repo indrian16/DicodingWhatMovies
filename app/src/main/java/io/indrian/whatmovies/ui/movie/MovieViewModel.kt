@@ -24,7 +24,7 @@ class MovieViewModel(private val repository: Repository) : ViewModel() {
     fun getMovies() {
         _movieState.value = CommonState.Loading
         Timber.d("CommonState.Loading")
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             try {
                 val movies = repository.getMovies(page = (0..600).random())
                 if (movies.isNotEmpty()) {

@@ -8,7 +8,10 @@ import io.indrian.whatmovies.utils.getOrAwaitValue
 import io.kotest.matchers.shouldBe
 import io.mockk.MockKAnnotations
 import io.mockk.impl.annotations.RelaxedMockK
+import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Before
 import org.junit.Rule
@@ -36,10 +39,13 @@ class TVShowViewModelTest {
         viewModel = TVShowViewModel(repository)
     }
 
+    @DelicateCoroutinesApi
     @ExperimentalCoroutinesApi
     @Test
     fun getTVShows() = coroutinesTestRule.testDispatcher.runBlockingTest {
-        viewModel.getTVShows()
+        GlobalScope.launch {
+            viewModel.getTVShows()
+        }
         viewModel.tvShowState.getOrAwaitValue().shouldBe(CommonState.Loading)
     }
 }

@@ -23,7 +23,7 @@ class TVShowViewModel(private val repository: Repository) : ViewModel() {
     fun getTVShows() {
         _tvShowState.value = CommonState.Loading
         Timber.d("CommonState.Loading")
-        viewModelScope.launch(Dispatchers.Default) {
+        viewModelScope.launch {
             try {
                 val tvShows = repository.getTVShows(page = (1..600).random())
                 if (tvShows.isNotEmpty()) {
