@@ -1,9 +1,7 @@
 package io.indrian.whatmovies.data.services
 
 import io.indrian.whatmovies.utils.enqueueResponse
-import io.kotest.matchers.collections.shouldBeEmpty
 import io.kotest.matchers.collections.shouldNotBeEmpty
-import io.kotest.matchers.nulls.shouldBeNull
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldNotBeEmpty

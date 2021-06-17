@@ -9,7 +9,6 @@ import io.indrian.whatmovies.data.repositories.Repository
 import io.indrian.whatmovies.utils.CommonState
 import io.indrian.whatmovies.utils.EspressoIdlingResource
 import io.indrian.whatmovies.utils.Event
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import timber.log.Timber
 
