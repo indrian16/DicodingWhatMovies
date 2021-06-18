@@ -59,8 +59,12 @@ class MainActivityTest {
     @Test
     fun getDetailMovie() {
         onView(withId(R.id.rv_movies)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        onView(withId(R.id.image_backdrop)).check(matches(isDisplayed()))
+        onView(withId(R.id.image_poster)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_title_value)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_information)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_overview_value)).check(matches(isDisplayed()))
+        onView(withId(R.id.genre_group)).check(matches(isDisplayed()))
 
         onView(withId(R.id.btn_end)).check(matches(isDisplayed()))
         onView(withId(R.id.btn_end)).perform(click())
@@ -75,8 +79,12 @@ class MainActivityTest {
     fun getDetailTVShow() {
         onView(withId(R.id.view_pager)).perform(swipeLeft())
         onView(withId(R.id.rv_tv_show)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        onView(withId(R.id.image_backdrop)).check(matches(isDisplayed()))
+        onView(withId(R.id.image_poster)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_title_value)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_information)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_overview_value)).check(matches(isDisplayed()))
+        onView(withId(R.id.genre_group)).check(matches(isDisplayed()))
 
         onView(withId(R.id.btn_end)).check(matches(isDisplayed()))
         onView(withId(R.id.btn_end)).perform(click())
