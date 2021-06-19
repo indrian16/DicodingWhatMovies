@@ -1,4 +1,4 @@
-package io.indrian.whatmovies.utils
+package io.indrian.whatmovies.data
 
 import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.data.models.TVShow
