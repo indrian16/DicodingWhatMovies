@@ -1,6 +1,7 @@
 package io.indrian.whatmovies.data.repositories
 
 import io.indrian.whatmovies.data.DummyData
+import io.indrian.whatmovies.data.source.RemoteDataSource
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldNotBeEmpty
@@ -8,16 +9,20 @@ import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
 import io.mockk.impl.annotations.RelaxedMockK
+import io.mockk.unmockkAll
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
+import org.junit.After
 import org.junit.Before
 import org.junit.Test
 
 class RepositoryTest {
 
+    // RemoteDataSource not the Class to be tested
     @RelaxedMockK
-    lateinit var remoteRepository: RemoteRepository
+    lateinit var remoteDataSource: RemoteDataSource
 
+    // Class under test
     private lateinit var repository: Repository
 
     private val dummyMovies = DummyData.getMovies()
@@ -31,15 +36,18 @@ class RepositoryTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this, relaxUnitFun = true)
-        repository = Repository(remoteRepository)
+        repository = Repository(remoteDataSource)
     }
+
+    @After
+    fun tearDown() = unmockkAll()
 
     @ExperimentalCoroutinesApi
     @Test
     fun getMovies() = runBlockingTest {
-        coEvery { remoteRepository.getMovies() } returns dummyMovies
+        coEvery { remoteDataSource.getMovies() } returns dummyMovies
         val movies = repository.getMovies()
-        coVerify { remoteRepository.getMovies() }
+        coVerify { remoteDataSource.getMovies() }
 
         movies.size.shouldNotBeNull()
         movies[0].title.shouldBe(dummyMovie.title)
@@ -50,9 +58,9 @@ class RepositoryTest {
     @ExperimentalCoroutinesApi
     @Test
     fun getTVShows() = runBlockingTest {
-        coEvery { remoteRepository.getTVShows() } returns dummyTVShows
+        coEvery { remoteDataSource.getTVShows() } returns dummyTVShows
         val tvShows = repository.getTVShows()
-        coVerify { remoteRepository.getTVShows() }
+        coVerify { remoteDataSource.getTVShows() }
 
         tvShows.size.shouldNotBeNull()
         tvShows[0].name.shouldBe(dummyTVShow.name)
@@ -63,9 +71,9 @@ class RepositoryTest {
     @ExperimentalCoroutinesApi
     @Test
     fun getDetailMovies() = runBlockingTest {
-        coEvery { remoteRepository.getDetailMovie(movieId) } returns dummyMovie
+        coEvery { remoteDataSource.getDetailMovie(movieId) } returns dummyMovie
         val movie = repository.getDetailMovies(movieId)
-        coVerify { remoteRepository.getDetailMovie(movieId) }
+        coVerify { remoteDataSource.getDetailMovie(movieId) }
 
         movie.shouldNotBeNull()
         movie.title.shouldBe(dummyMovie.title)
@@ -79,9 +87,9 @@ class RepositoryTest {
     @ExperimentalCoroutinesApi
     @Test
     fun getDetailTVShow() = runBlockingTest {
-        coEvery { remoteRepository.getDetailTVShow(tvShowId) } returns dummyTVShow
+        coEvery { remoteDataSource.getDetailTVShow(tvShowId) } returns dummyTVShow
         val tvShow = repository.getDetailTVShow(tvShowId)
-        coVerify { remoteRepository.getDetailTVShow(tvShowId) }
+        coVerify { remoteDataSource.getDetailTVShow(tvShowId) }
 
         tvShow.shouldNotBeNull()
         tvShow.name.shouldBe(dummyTVShow.name)

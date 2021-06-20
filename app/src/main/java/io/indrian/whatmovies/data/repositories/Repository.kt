@@ -2,16 +2,17 @@ package io.indrian.whatmovies.data.repositories
 
 import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.data.models.TVShow
+import io.indrian.whatmovies.data.source.RemoteDataSource
 
 class Repository(
-    private val remoteRepository: RemoteRepository
+    private val remoteDataSource: RemoteDataSource
 ) {
 
-    suspend fun getMovies(page: Int = 1): List<Movie> = remoteRepository.getMovies(page)
+    suspend fun getMovies(page: Int = 1): List<Movie> = remoteDataSource.getMovies(page)
 
-    suspend fun getTVShows(page: Int = 1): List<TVShow> = remoteRepository.getTVShows(page)
+    suspend fun getTVShows(page: Int = 1): List<TVShow> = remoteDataSource.getTVShows(page)
 
-    suspend fun getDetailMovies(id: Long): Movie? = remoteRepository.getDetailMovie(id)
+    suspend fun getDetailMovies(id: Long): Movie? = remoteDataSource.getDetailMovie(id)
 
-    suspend fun getDetailTVShow(id: Long): TVShow? = remoteRepository.getDetailTVShow(id)
+    suspend fun getDetailTVShow(id: Long): TVShow? = remoteDataSource.getDetailTVShow(id)
 }

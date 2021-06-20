@@ -1,9 +1,9 @@
-package io.indrian.whatmovies.data.repositories
+package io.indrian.whatmovies.data.source
 
 import io.indrian.whatmovies.data.services.MovieService
 import io.indrian.whatmovies.data.services.TVShowService
 
-class RemoteRepository(
+class RemoteDataSource(
     private val movieService: MovieService,
     private val tvShowService: TVShowService
 ){
