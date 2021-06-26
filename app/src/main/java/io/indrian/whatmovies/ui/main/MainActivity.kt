@@ -34,22 +34,6 @@ class MainActivity : AppCompatActivity() {
         binding.bottomNav.setupWithNavController(controller)
     }
 
-//    private fun setupTabPager() {
-//        val titles = intArrayOf(R.string.movies, R.string.tv_show)
-//        val sectionsPagerAdapter = SectionsPagerAdapter(this)
-//
-//        with(binding) {
-//
-//            // Set Pager Adapter
-//            viewPager.adapter = sectionsPagerAdapter
-//
-//            // Connect Tab and ViewPager
-//            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-//                tab.text = resources.getString(titles[position])
-//            }.attach()
-//        }
-//    }
-
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
