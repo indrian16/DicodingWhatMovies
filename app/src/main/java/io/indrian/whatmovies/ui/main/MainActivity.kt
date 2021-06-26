@@ -2,7 +2,8 @@ package io.indrian.whatmovies.ui.main
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.google.android.material.tabs.TabLayoutMediator
+import androidx.navigation.findNavController
+import androidx.navigation.ui.setupWithNavController
 import io.indrian.whatmovies.R
 import io.indrian.whatmovies.databinding.ActivityMainBinding
 import io.indrian.whatmovies.utils.toast
@@ -18,7 +19,7 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         setupToolbar()
-        setupTabPager()
+        setBottomNav()
     }
 
     private fun setupToolbar() {
@@ -28,21 +29,26 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    private fun setupTabPager() {
-        val titles = intArrayOf(R.string.movies, R.string.tv_show)
-        val sectionsPagerAdapter = SectionsPagerAdapter(this)
-
-        with(binding) {
-
-            // Set Pager Adapter
-            viewPager.adapter = sectionsPagerAdapter
-
-            // Connect Tab and ViewPager
-            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
-                tab.text = resources.getString(titles[position])
-            }.attach()
-        }
+    private fun setBottomNav() {
+        val controller = findNavController(R.id.nav_host_fragment)
+        binding.bottomNav.setupWithNavController(controller)
     }
+
+//    private fun setupTabPager() {
+//        val titles = intArrayOf(R.string.movies, R.string.tv_show)
+//        val sectionsPagerAdapter = SectionsPagerAdapter(this)
+//
+//        with(binding) {
+//
+//            // Set Pager Adapter
+//            viewPager.adapter = sectionsPagerAdapter
+//
+//            // Connect Tab and ViewPager
+//            TabLayoutMediator(tabLayout, viewPager) { tab, position ->
+//                tab.text = resources.getString(titles[position])
+//            }.attach()
+//        }
+//    }
 
     override fun onDestroy() {
         super.onDestroy()
