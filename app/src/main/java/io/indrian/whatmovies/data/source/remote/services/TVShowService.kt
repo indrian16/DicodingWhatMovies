@@ -1,4 +1,4 @@
-package io.indrian.whatmovies.data.services
+package io.indrian.whatmovies.data.source.remote.services
 
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.data.responses.ListResponse

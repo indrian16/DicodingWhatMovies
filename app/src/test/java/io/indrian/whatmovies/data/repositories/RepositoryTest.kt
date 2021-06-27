@@ -1,7 +1,7 @@
 package io.indrian.whatmovies.data.repositories
 
 import io.indrian.whatmovies.data.DummyData
-import io.indrian.whatmovies.data.source.RemoteDataSource
+import io.indrian.whatmovies.data.source.remote.RemoteDataSource
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldNotBeEmpty

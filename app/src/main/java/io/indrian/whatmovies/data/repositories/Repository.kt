@@ -2,7 +2,7 @@ package io.indrian.whatmovies.data.repositories
 
 import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.data.models.TVShow
-import io.indrian.whatmovies.data.source.RemoteDataSource
+import io.indrian.whatmovies.data.source.remote.RemoteDataSource
 
 class Repository(
     private val remoteDataSource: RemoteDataSource

@@ -1,7 +1,7 @@
-package io.indrian.whatmovies.data.source
+package io.indrian.whatmovies.data.source.remote
 
-import io.indrian.whatmovies.data.services.MovieService
-import io.indrian.whatmovies.data.services.TVShowService
+import io.indrian.whatmovies.data.source.remote.services.MovieService
+import io.indrian.whatmovies.data.source.remote.services.TVShowService
 
 class RemoteDataSource(
     private val movieService: MovieService,

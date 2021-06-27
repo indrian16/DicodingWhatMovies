@@ -1,8 +1,8 @@
 package io.indrian.whatmovies.di
 
 import io.indrian.whatmovies.BuildConfig
-import io.indrian.whatmovies.data.services.MovieService
-import io.indrian.whatmovies.data.services.TVShowService
+import io.indrian.whatmovies.data.source.remote.services.MovieService
+import io.indrian.whatmovies.data.source.remote.services.TVShowService
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
