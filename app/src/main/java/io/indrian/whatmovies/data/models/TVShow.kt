@@ -1,37 +1,43 @@
 package io.indrian.whatmovies.data.models
 
 
+import androidx.room.Entity
+import androidx.room.Ignore
 import com.squareup.moshi.Json
 import com.squareup.moshi.JsonClass
+import io.indrian.whatmovies.utils.AppConstants
 
+@Entity(tableName = AppConstants.TABLE_TV_SHOWS, primaryKeys = ["id"])
 @JsonClass(generateAdapter = true)
 data class TVShow(
     @Json(name = "backdrop_path")
-    val backdropPath: String? = "",
+    var backdropPath: String? = "",
     @Json(name = "first_air_date")
-    val firstAirDate: String = "",
+    var firstAirDate: String = "",
     @Json(name = "genre_ids")
-    val genreIds: List<Int> = listOf(),
+    var genreIds: List<Int> = listOf(),
+    @Ignore
     @Json(name = "genres")
-    val genres: List<Genre> = listOf(),
+    var genres: List<Genre> = listOf(),
     @Json(name = "id")
-    val id: Long = 0,
+    var id: Long = 0,
     @Json(name = "name")
-    val name: String = "",
+    var name: String = "",
     @Json(name = "origin_country")
-    val originCountry: List<String> = listOf(),
+    @Ignore
+    var originCountry: List<String> = listOf(),
     @Json(name = "original_language")
-    val originalLanguage: String = "",
+    var originalLanguage: String = "",
     @Json(name = "original_name")
-    val originalName: String = "",
+    var originalName: String = "",
     @Json(name = "overview")
-    val overview: String = "",
+    var overview: String = "",
     @Json(name = "popularity")
-    val popularity: Double = 0.0,
+    var popularity: Double = 0.0,
     @Json(name = "poster_path")
-    val posterPath: String? = "",
+    var posterPath: String? = "",
     @Json(name = "vote_average")
-    val voteAverage: Double = 0.0,
+    var voteAverage: Double = 0.0,
     @Json(name = "vote_count")
-    val voteCount: Int = 0
+    var voteCount: Int = 0
 )

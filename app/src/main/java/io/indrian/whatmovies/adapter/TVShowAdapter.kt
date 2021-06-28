@@ -2,6 +2,8 @@ package io.indrian.whatmovies.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.paging.PagedListAdapter
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import io.indrian.whatmovies.R
 import io.indrian.whatmovies.data.models.TVShow
@@ -9,14 +11,7 @@ import io.indrian.whatmovies.databinding.ItemLayoutBinding
 import io.indrian.whatmovies.di.GlideApp
 import io.indrian.whatmovies.utils.AppUtils
 
-class TVShowAdapter(private val onItemCallbackListener: OnItemCallbackListener) : RecyclerView.Adapter<TVShowAdapter.ViewHolder>() {
-
-    private var tvShows: List<TVShow> = arrayListOf()
-
-    fun add(tvShows: List<TVShow>) {
-        this.tvShows = tvShows
-        notifyDataSetChanged()
-    }
+class TVShowAdapter(private val onItemCallbackListener: OnItemCallbackListener) : PagedListAdapter<TVShow, TVShowAdapter.ViewHolder>(DIFF_CALLBACK) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(
@@ -29,10 +24,11 @@ class TVShowAdapter(private val onItemCallbackListener: OnItemCallbackListener) 
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(tvShows[position])
+        val tvShow = getItem(position)
+        if (tvShow != null) {
+            holder.bind(tvShow)
+        }
     }
-
-    override fun getItemCount(): Int = tvShows.size
 
     interface OnItemCallbackListener {
         fun onClickItem(tvShows: TVShow)
@@ -58,6 +54,18 @@ class TVShowAdapter(private val onItemCallbackListener: OnItemCallbackListener) 
                 root.setOnClickListener {
                     onItemCallbackListener.onClickItem(tvShows)
                 }
+            }
+        }
+    }
+
+    companion object {
+        private val DIFF_CALLBACK = object : DiffUtil.ItemCallback<TVShow>() {
+            override fun areItemsTheSame(oldItem: TVShow, newItem: TVShow): Boolean {
+                return oldItem.id == newItem.id
+            }
+
+            override fun areContentsTheSame(oldItem: TVShow, newItem: TVShow): Boolean {
+                return oldItem == newItem
             }
         }
     }

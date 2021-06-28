@@ -7,13 +7,20 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import io.indrian.whatmovies.R
 import io.indrian.whatmovies.adapter.MovieAdapter
 import io.indrian.whatmovies.data.models.Movie
 import io.indrian.whatmovies.databinding.FragmentMovieBinding
 import io.indrian.whatmovies.ui.detail.DetailActivity
-import io.indrian.whatmovies.utils.*
+import io.indrian.whatmovies.utils.Event
+import io.indrian.whatmovies.utils.toGone
+import io.indrian.whatmovies.utils.toVisible
+import io.indrian.whatmovies.utils.toast
+import io.indrian.whatmovies.vo.Resource
+import io.indrian.whatmovies.vo.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 
 class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
 
@@ -25,28 +32,25 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
     private val viewModel: MovieViewModel by viewModel()
 
     @SuppressLint("SetTextI18n")
-    private val stateMovieObserver = Observer<CommonState<List<Movie>>> { state ->
-        when (state) {
-            is CommonState.Loading -> {
+    private val stateMovieObserver = Observer<Resource<PagedList<Movie>>> { state ->
+        when (state.status) {
+            Status.LOADING -> {
+                Timber.d("Status.LOADING")
                 binding.swipeMovie.isRefreshing = true
                 binding.rvMovies.toGone()
                 binding.errorEmptyLayout.root.toGone()
             }
-            is CommonState.Empty -> {
-                binding.swipeMovie.isRefreshing = false
-                binding.rvMovies.toGone()
-                binding.errorEmptyLayout.root.toVisible()
-
-                binding.errorEmptyLayout.tvMessage.text = getString(R.string.empty_data)
-            }
-            is CommonState.Loaded -> {
+            Status.SUCCESS -> {
+                Timber.d("Status.SUCCESS: ${state.data}")
                 binding.swipeMovie.isRefreshing = false
                 binding.rvMovies.toVisible()
                 binding.errorEmptyLayout.root.toGone()
 
-                adapter.add(state.data)
+                adapter.submitList(state.data)
+                adapter.notifyDataSetChanged()
             }
-            is CommonState.Error -> {
+            Status.ERROR -> {
+                Timber.d("Status.ERROR")
                 binding.swipeMovie.isRefreshing = false
                 binding.rvMovies.toGone()
                 binding.errorEmptyLayout.root.toVisible()
@@ -74,12 +78,13 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getMovies()
-        viewModel.movieState.observe(viewLifecycleOwner, stateMovieObserver)
+        viewModel.getMovies().observe(viewLifecycleOwner, stateMovieObserver)
         viewModel.eventOpenDetailMovie.observe(viewLifecycleOwner, eventOpenDetailMovieObserver)
 
         binding.rvMovies.adapter = adapter
-        binding.swipeMovie.setOnRefreshListener { viewModel.getMovies() }
+        binding.swipeMovie.setOnRefreshListener {
+            viewModel.getMovies().observe(viewLifecycleOwner, stateMovieObserver)
+        }
     }
 
     override fun onClickItem(movie: Movie) {
@@ -92,7 +97,7 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.movieState.removeObserver(stateMovieObserver)
+        viewModel.getMovies().removeObserver(stateMovieObserver)
         viewModel.eventOpenDetailMovie.removeObserver(eventOpenDetailMovieObserver)
         _binding = null
     }

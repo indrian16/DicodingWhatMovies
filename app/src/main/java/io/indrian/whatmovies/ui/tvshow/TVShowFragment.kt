@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.paging.PagedList
 import io.indrian.whatmovies.R
 import io.indrian.whatmovies.adapter.TVShowAdapter
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.databinding.FragmentTVShowBinding
 import io.indrian.whatmovies.ui.detail.DetailActivity
 import io.indrian.whatmovies.utils.*
+import io.indrian.whatmovies.vo.Resource
+import io.indrian.whatmovies.vo.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
@@ -23,26 +26,22 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
 
     private val viewModel: TVShowViewModel by viewModel()
 
-    private val stateTVShowsObserver = Observer<CommonState<List<TVShow>>> { state ->
-        when (state) {
-            is CommonState.Loading -> {
+    private val stateTVShowsObserver = Observer<Resource<PagedList<TVShow>>> { state ->
+        when (state.status) {
+            Status.LOADING -> {
                 binding.swipeTvShow.isRefreshing = true
                 binding.rvTvShow.toGone()
                 binding.errorEmptyLayout.root.toGone()
             }
-            is CommonState.Empty -> {
-                binding.swipeTvShow.isRefreshing = false
-                binding.rvTvShow.toGone()
-                binding.errorEmptyLayout.root.toVisible()
-            }
-            is CommonState.Loaded -> {
+            Status.SUCCESS -> {
                 binding.swipeTvShow.isRefreshing = false
                 binding.rvTvShow.toVisible()
                 binding.errorEmptyLayout.root.toGone()
 
-                adapter.add(state.data)
+                adapter.submitList(state.data)
+                adapter.notifyDataSetChanged()
             }
-            is CommonState.Error -> {
+            Status.ERROR -> {
                 binding.swipeTvShow.isRefreshing = false
                 binding.rvTvShow.toGone()
                 binding.errorEmptyLayout.root.toVisible()
@@ -70,12 +69,13 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getTVShows()
-        viewModel.tvShowState.observe(viewLifecycleOwner, stateTVShowsObserver)
+        viewModel.getTVShows().observe(viewLifecycleOwner, stateTVShowsObserver)
         viewModel.eventOpenDetailTVShow.observe(viewLifecycleOwner, eventOpenDetailTVShowObserver)
 
         binding.rvTvShow.adapter = adapter
-        binding.swipeTvShow.setOnRefreshListener { viewModel.getTVShows() }
+        binding.swipeTvShow.setOnRefreshListener {
+            viewModel.getTVShows().observe(viewLifecycleOwner, stateTVShowsObserver)
+        }
     }
 
     override fun onClickItem(tvShows: TVShow) {
@@ -88,7 +88,7 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.tvShowState.removeObserver(stateTVShowsObserver)
+        viewModel.getTVShows().removeObserver(stateTVShowsObserver)
         viewModel.eventOpenDetailTVShow.removeObserver(eventOpenDetailTVShowObserver)
         _binding = null
     }

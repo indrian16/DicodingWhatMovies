@@ -1,4 +1,4 @@
-package io.indrian.whatmovies.data.responses
+package io.indrian.whatmovies.data.source.remote.responses
 
 
 import com.squareup.moshi.Json
