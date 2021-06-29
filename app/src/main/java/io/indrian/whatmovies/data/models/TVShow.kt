@@ -1,6 +1,7 @@
 package io.indrian.whatmovies.data.models
 
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.Ignore
 import com.squareup.moshi.Json
@@ -39,5 +40,7 @@ data class TVShow(
     @Json(name = "vote_average")
     var voteAverage: Double = 0.0,
     @Json(name = "vote_count")
-    var voteCount: Int = 0
+    var voteCount: Int = 0,
+    @ColumnInfo(name = "is_favorite")
+    var isFavorite: Boolean = false
 )

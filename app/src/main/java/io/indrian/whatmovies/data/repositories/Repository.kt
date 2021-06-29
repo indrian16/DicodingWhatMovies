@@ -58,15 +58,49 @@ class Repository(
         }.asLiveData()
     }
 
+    fun getDetailMovies(id: Long): LiveData<Resource<Movie>> {
+        return object : NetworkBoundResource<Movie, Movie>(appExecutors) {
+            override fun loadFromDB(): LiveData<Movie> {
+                return localDataSource.getMovie(id)
+            }
+
+            override fun shouldFetch(data: Movie?): Boolean {
+                return data != null
+            }
+
+            override fun createCall(): LiveData<ApiResponse<Movie>> {
+                return remoteDataSource.getDetailMovie(id)
+            }
+
+            override fun saveCallResult(data: Movie) {
+                localDataSource.updateMovie(data)
+            }
+        }.asLiveData()
+    }
+
+    fun getDetailTVShow(id: Long): LiveData<Resource<TVShow>> {
+        return object : NetworkBoundResource<TVShow, TVShow>(appExecutors) {
+            override fun loadFromDB(): LiveData<TVShow> {
+                return localDataSource.getTVShow(id)
+            }
+
+            override fun shouldFetch(data: TVShow?): Boolean {
+                return data != null
+            }
+
+            override fun createCall(): LiveData<ApiResponse<TVShow>> {
+                return remoteDataSource.getDetailTVShow(id)
+            }
+
+            override fun saveCallResult(data: TVShow) {
+                localDataSource.updateTVShow(data)
+            }
+        }.asLiveData()
+    }
+
     private fun pageConfig() = PagedList.Config.Builder()
         .setEnablePlaceholders(false)
         .setInitialLoadSizeHint(4)
         .setPageSize(4)
         .build()
-
-//    suspend fun getTVShows(page: Int = 1): List<TVShow> = remoteDataSource.getTVShows(page)
-//
-//    suspend fun getDetailMovies(id: Long): Movie? = remoteDataSource.getDetailMovie(id)
-//
-//    suspend fun getDetailTVShow(id: Long): TVShow? = remoteDataSource.getDetailTVShow(id)
 }

@@ -51,15 +51,18 @@ class RemoteDataSource(
         request.enqueue(object : Callback<Movie?> {
             override fun onResponse(call: Call<Movie?>, response: Response<Movie?>) {
                 Timber.d("getDetailMovie: $response")
+                val body = response.body() ?: Movie()
+                val ids = body.genres.map { it.id }
+                body.genreIds = ids
                 liveMovie.value = ApiResponse.success(
-                    body = response.body() ?: Movie()
+                    body = body
                 )
                 EspressoIdlingResource.decrement()
             }
 
             override fun onFailure(call: Call<Movie?>, t: Throwable) {
                 Timber.e("getDetailMovie: ${t.message}")
-                liveMovie.value = ApiResponse.error(t.message.toString(), Movie())
+                liveMovie.value = ApiResponse.error(t.message ?: "Something Error", Movie())
                 EspressoIdlingResource.decrement()
             }
         })
@@ -84,7 +87,7 @@ class RemoteDataSource(
             }
 
             override fun onFailure(call: Call<ListResponse<TVShow>>, t: Throwable) {
-                Timber.e("getMoviesError: ${t.message}")
+                Timber.e("getTVShows: ${t.message}")
                 liveTVShows.value = ApiResponse.error(t.message.toString(), arrayListOf())
                 EspressoIdlingResource.decrement()
             }
@@ -100,16 +103,19 @@ class RemoteDataSource(
 
         request.enqueue(object : Callback<TVShow?> {
             override fun onResponse(call: Call<TVShow?>, response: Response<TVShow?>) {
-                Timber.d("getDetailMovie: $response")
+                Timber.d("getDetailTVShow: $response")
+                val body = response.body() ?: TVShow()
+                val ids = body.genres.map { it.id }
+                body.genreIds = ids
                 liveTVShow.value = ApiResponse.success(
-                    body = response.body() ?: TVShow()
+                    body = body
                 )
                 EspressoIdlingResource.decrement()
             }
 
             override fun onFailure(call: Call<TVShow?>, t: Throwable) {
-                Timber.e("getDetailMovie: ${t.message}")
-                liveTVShow.value = ApiResponse.error(t.message.toString(), TVShow())
+                Timber.e("getDetailTVShow: ${t.message}")
+                liveTVShow.value = ApiResponse.error(t.message ?: "Something Error", TVShow())
                 EspressoIdlingResource.decrement()
             }
         })

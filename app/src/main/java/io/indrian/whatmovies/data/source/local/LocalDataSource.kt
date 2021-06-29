@@ -11,8 +11,12 @@ class LocalDataSource(
 ) {
 
     fun getMovies() = movieDao.getMovies()
+    fun getMovie(id: Long) = movieDao.getMovie(id)
     fun insertMovies(movies: List<Movie>) = movieDao.insertMovies(movies)
+    fun updateMovie(movie: Movie) = movieDao.updateMovie(movie)
 
     fun getTVShows() = tvShowDao.getTVShows()
+    fun getTVShow(id: Long) = tvShowDao.getTVShow(id)
     fun insertTVShow(tvShows: List<TVShow>) = tvShowDao.insertTVShows(tvShows)
+    fun updateTVShow(tvShow: TVShow) = tvShowDao.updateTVShow(tvShow)
 }

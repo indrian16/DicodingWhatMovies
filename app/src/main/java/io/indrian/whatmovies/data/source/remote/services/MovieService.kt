@@ -14,5 +14,5 @@ interface MovieService {
     fun getMovies(@Query("page") page: Int = 1): Call<ListResponse<Movie>>
 
     @GET("${AppConstants.MOVIE_ENDPOINT}/{id}")
-    fun getDetailMovie(@Path("id") id: Long): Call<Movie?>
+    fun getDetailMovie(@Path("id") id: Long): Call<Movie>
 }

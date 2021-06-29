@@ -16,9 +16,10 @@ import io.indrian.whatmovies.databinding.ActivityDetailBinding
 import io.indrian.whatmovies.di.GlideApp
 import io.indrian.whatmovies.ui.dialogs.LoadingDialogFragment
 import io.indrian.whatmovies.utils.AppUtils
-import io.indrian.whatmovies.utils.CommonState
 import io.indrian.whatmovies.utils.toGone
 import io.indrian.whatmovies.utils.toast
+import io.indrian.whatmovies.vo.Resource
+import io.indrian.whatmovies.vo.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class DetailActivity : AppCompatActivity() {
@@ -29,40 +30,46 @@ class DetailActivity : AppCompatActivity() {
     private val viewModel: DetailViewModel by viewModel()
 
     private val loadingDialogFragment = LoadingDialogFragment.newInstance()
-    private val stateDetailMovieObserver = Observer<CommonState<Movie>> { state ->
-        when (state) {
-            is CommonState.Loading -> {
-                loadingDialogFragment.show(supportFragmentManager, LoadingDialogFragment.TAG)
+    private val stateDetailMovieObserver = Observer<Resource<Movie>> { state ->
+        when (state.status) {
+            Status.LOADING -> {
+                if (!loadingDialogFragment.isAdded) {
+                    loadingDialogFragment.show(supportFragmentManager, LoadingDialogFragment.TAG)
+                }
             }
-            is CommonState.Empty -> {
-                loadingDialogFragment.dismiss()
+            Status.SUCCESS -> {
+                if (loadingDialogFragment.isAdded) {
+                    loadingDialogFragment.dismiss()
+                }
+                if (state.data != null) {
+                    displayMovie(state.data)
+                }
             }
-            is CommonState.Loaded -> {
+            Status.ERROR -> {
                 loadingDialogFragment.dismiss()
-                displayMovie(state.data)
-            }
-            is CommonState.Error -> {
-                loadingDialogFragment.dismiss()
-                toast(state.message)
+                toast(state.message ?: getString(R.string.default_error))
             }
         }
     }
 
-    private val stateDetailTVShowObserver = Observer<CommonState<TVShow>> { state ->
-        when (state) {
-            is CommonState.Loading -> {
-                loadingDialogFragment.show(supportFragmentManager, LoadingDialogFragment.TAG)
+    private val stateDetailTVShowObserver = Observer<Resource<TVShow>> { state ->
+        when (state.status) {
+            Status.LOADING -> {
+                if (!loadingDialogFragment.isAdded) {
+                    loadingDialogFragment.show(supportFragmentManager, LoadingDialogFragment.TAG)
+                }
             }
-            is CommonState.Empty -> {
-                loadingDialogFragment.dismiss()
+            Status.SUCCESS -> {
+                if (loadingDialogFragment.isAdded) {
+                    loadingDialogFragment.dismiss()
+                }
+                if (state.data != null) {
+                    displayTVShow(state.data)
+                }
             }
-            is CommonState.Loaded -> {
+            Status.ERROR -> {
                 loadingDialogFragment.dismiss()
-                displayTVShow(state.data)
-            }
-            is CommonState.Error -> {
-                loadingDialogFragment.dismiss()
-                toast(state.message)
+                toast(state.message ?: getString(R.string.default_error))
             }
         }
     }
@@ -77,11 +84,9 @@ class DetailActivity : AppCompatActivity() {
         val isMovie = intent?.getBooleanExtra(IS_MOVIE_EXTRA, true) ?: true
         val id = intent?.getLongExtra(ID_EXTRA, 0L) ?: 0L
         if (isMovie) {
-            viewModel.getDetailMovies(id)
-            viewModel.stateDetailMovie.observe(this, stateDetailMovieObserver)
+            viewModel.getDetailMovies(id).observe(this, stateDetailMovieObserver)
         } else {
-            viewModel.getDetailTVShow(id)
-            viewModel.stateDetailTVShow.observe(this, stateDetailTVShowObserver)
+            viewModel.getDetailTVShow(id).observe(this, stateDetailTVShowObserver)
         }
     }
 
@@ -117,9 +122,9 @@ class DetailActivity : AppCompatActivity() {
             tvInformation.text = "${getString(R.string.year)}: ${AppUtils.getYear(movie.releaseDate)} | ${movie.voteAverage} "
             tvOverviewValue.text = movie.overview
 
-            movie.genres.map {
+            movie.genreIds.map {
                 Chip(this@DetailActivity).apply {
-                    text = it.name
+                    text = AppUtils.getGenreName(it)
                     setOnClickListener { toast(getString(R.string.coming_soon)) }
                 }
             }.forEach {
@@ -148,9 +153,9 @@ class DetailActivity : AppCompatActivity() {
             tvInformation.text = "${getString(R.string.year)}: ${AppUtils.getYear(tvShow.firstAirDate)} | ${tvShow.voteAverage} "
             tvOverviewValue.text = tvShow.overview
 
-            tvShow.genres.map {
+            tvShow.genreIds.map {
                 Chip(this@DetailActivity).apply {
-                    text = it.name
+                    text = AppUtils.getGenreName(it)
                     setOnClickListener { toast(getString(R.string.coming_soon)) }
                 }
             }.forEach {
@@ -184,8 +189,8 @@ class DetailActivity : AppCompatActivity() {
 
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.stateDetailMovie.removeObserver(stateDetailMovieObserver)
-        viewModel.stateDetailTVShow.removeObserver(stateDetailTVShowObserver)
+        viewModel.getDetailMovies().removeObserver(stateDetailMovieObserver)
+        viewModel.getDetailTVShow().removeObserver(stateDetailTVShowObserver)
         _binding = null
     }
 

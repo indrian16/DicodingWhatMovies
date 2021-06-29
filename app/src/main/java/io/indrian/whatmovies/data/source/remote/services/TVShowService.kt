@@ -14,5 +14,5 @@ interface TVShowService {
     fun getTVShows(@Query("page") page: Int = 1): Call<ListResponse<TVShow>>
 
     @GET("${AppConstants.TV_SHOW_ENDPOINT}/{id}")
-    fun getDetailTVShow(@Path("id") id: Long): Call<TVShow?>
+    fun getDetailTVShow(@Path("id") id: Long): Call<TVShow>
 }

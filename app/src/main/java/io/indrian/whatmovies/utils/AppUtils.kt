@@ -47,6 +47,11 @@ object AppUtils {
     }
 
     fun getYear(date: String): String {
-        return LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")).year.toString()
+        return try {
+            LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd")).year.toString()
+        } catch (e: Exception) {
+            e.printStackTrace()
+            "-"
+        }
     }
 }
