@@ -4,11 +4,12 @@ import android.support.test.uiautomator.UiDevice
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.IdlingRegistry
+import androidx.test.espresso.action.ViewActions
 import androidx.test.espresso.action.ViewActions.click
-import androidx.test.espresso.action.ViewActions.swipeLeft
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions
-import androidx.test.espresso.matcher.ViewMatchers.*
+import androidx.test.espresso.matcher.ViewMatchers.isDisplayed
+import androidx.test.espresso.matcher.ViewMatchers.withId
 import androidx.test.ext.junit.rules.ActivityScenarioRule
 import androidx.test.platform.app.InstrumentationRegistry
 import io.indrian.whatmovies.R
@@ -51,7 +52,7 @@ class MainActivityTest {
 
     @Test
     fun getTVShows() {
-        onView(withId(R.id.view_pager)).perform(swipeLeft())
+        onView(withId(R.id.navigation_tv_show)).perform(click())
         onView(withId(R.id.rv_tv_show)).check(matches(isDisplayed()))
         onView(withId(R.id.rv_tv_show)).perform(RecyclerViewActions.scrollToPosition<RecyclerView.ViewHolder>(20))
     }
@@ -65,6 +66,7 @@ class MainActivityTest {
         onView(withId(R.id.tv_information)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_overview_value)).check(matches(isDisplayed()))
         onView(withId(R.id.genre_group)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_white_list)).check(matches(isDisplayed()))
 
         onView(withId(R.id.btn_end)).check(matches(isDisplayed()))
         onView(withId(R.id.btn_end)).perform(click())
@@ -77,7 +79,7 @@ class MainActivityTest {
 
     @Test
     fun getDetailTVShow() {
-        onView(withId(R.id.view_pager)).perform(swipeLeft())
+        onView(withId(R.id.navigation_tv_show)).perform(click())
         onView(withId(R.id.rv_tv_show)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
         onView(withId(R.id.image_backdrop)).check(matches(isDisplayed()))
         onView(withId(R.id.image_poster)).check(matches(isDisplayed()))
@@ -85,12 +87,65 @@ class MainActivityTest {
         onView(withId(R.id.tv_information)).check(matches(isDisplayed()))
         onView(withId(R.id.tv_overview_value)).check(matches(isDisplayed()))
         onView(withId(R.id.genre_group)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_white_list)).check(matches(isDisplayed()))
 
         onView(withId(R.id.btn_end)).check(matches(isDisplayed()))
         onView(withId(R.id.btn_end)).perform(click())
         val mDevice = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
         mDevice.pressBack()
 
+        onView(withId(R.id.btn_start)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_start)).perform(click())
+    }
+
+    @Test
+    fun testFavoritesMovies() {
+        onView(withId(R.id.rv_movies)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        onView(withId(R.id.image_backdrop)).check(matches(isDisplayed()))
+        onView(withId(R.id.image_poster)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_title_value)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_information)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_overview_value)).check(matches(isDisplayed()))
+        onView(withId(R.id.genre_group)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_white_list)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_white_list)).perform(click())
+
+        onView(withId(R.id.btn_start)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_start)).perform(click())
+
+        onView(withId(R.id.navigation_favorite)).perform(click())
+        onView(withId(R.id.rv_movies)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_movies)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+
+        onView(withId(R.id.btn_white_list)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_white_list)).perform(click())
+        onView(withId(R.id.btn_start)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_start)).perform(click())
+    }
+
+    @Test
+    fun testFavoritesTVShows() {
+        onView(withId(R.id.navigation_tv_show)).perform(click())
+        onView(withId(R.id.rv_tv_show)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+        onView(withId(R.id.image_backdrop)).check(matches(isDisplayed()))
+        onView(withId(R.id.image_poster)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_title_value)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_information)).check(matches(isDisplayed()))
+        onView(withId(R.id.tv_overview_value)).check(matches(isDisplayed()))
+        onView(withId(R.id.genre_group)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_white_list)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_white_list)).perform(click())
+
+        onView(withId(R.id.btn_start)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_start)).perform(click())
+
+        onView(withId(R.id.navigation_favorite)).perform(click())
+        onView(withId(R.id.view_pager)).perform(ViewActions.swipeLeft())
+        onView(withId(R.id.rv_tv_show)).check(matches(isDisplayed()))
+        onView(withId(R.id.rv_tv_show)).perform(RecyclerViewActions.actionOnItemAtPosition<RecyclerView.ViewHolder>(0, click()))
+
+        onView(withId(R.id.btn_white_list)).check(matches(isDisplayed()))
+        onView(withId(R.id.btn_white_list)).perform(click())
         onView(withId(R.id.btn_start)).check(matches(isDisplayed()))
         onView(withId(R.id.btn_start)).perform(click())
     }
