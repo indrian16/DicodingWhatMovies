@@ -1,26 +1,37 @@
 package io.indrian.whatmovies.data.repositories
 
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.MutableLiveData
+import androidx.paging.DataSource
 import io.indrian.whatmovies.data.DummyData
+import io.indrian.whatmovies.data.models.Movie
+import io.indrian.whatmovies.data.models.TVShow
+import io.indrian.whatmovies.data.source.local.LocalDataSource
 import io.indrian.whatmovies.data.source.remote.RemoteDataSource
+import io.indrian.whatmovies.utils.AppExecutors
+import io.indrian.whatmovies.utils.LiveDataTestUtil
+import io.indrian.whatmovies.utils.PagedListUtil
+import io.indrian.whatmovies.vo.Resource
 import io.kotest.matchers.nulls.shouldNotBeNull
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.string.shouldNotBeEmpty
-import io.mockk.MockKAnnotations
-import io.mockk.coEvery
-import io.mockk.coVerify
+import io.mockk.*
 import io.mockk.impl.annotations.RelaxedMockK
-import io.mockk.unmockkAll
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.test.runBlockingTest
 import org.junit.After
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 
 class RepositoryTest {
 
-    // RemoteDataSource not the Class to be tested
+    @get:Rule
+    var instantTaskExecutorRule = InstantTaskExecutorRule()
+
     @RelaxedMockK
     lateinit var remoteDataSource: RemoteDataSource
+
+    @RelaxedMockK
+    lateinit var localDateSource: LocalDataSource
 
     // Class under test
     private lateinit var repository: Repository
@@ -36,44 +47,46 @@ class RepositoryTest {
     @Before
     fun setUp() {
         MockKAnnotations.init(this, relaxUnitFun = true)
-        repository = Repository(remoteDataSource)
+        repository = Repository(remoteDataSource, localDateSource, AppExecutors())
     }
 
     @After
     fun tearDown() = unmockkAll()
 
-    @ExperimentalCoroutinesApi
     @Test
-    fun getMovies() = runBlockingTest {
-        coEvery { remoteDataSource.getMovies() } returns dummyMovies
-        val movies = repository.getMovies()
-        coVerify { remoteDataSource.getMovies() }
+    fun getMovies() {
+        val dataSourceFactory = mockkClass(DataSource.Factory::class) as DataSource.Factory<Int, Movie>
+        every { localDateSource.getMovies() } returns dataSourceFactory
 
-        movies.size.shouldNotBeNull()
-        movies[0].title.shouldBe(dummyMovie.title)
-        movies[0].posterPath.shouldNotBeEmpty()
-        movies[0].genreIds.shouldNotBeNull()
+        repository.getMovies()
+        val movies = Resource.success(PagedListUtil.mockPagedList(dummyMovies))
+        verify { localDateSource.getMovies() }
+
+        movies.data.shouldNotBeNull()
+        movies.data?.size.shouldBe(dummyMovies.size)
     }
 
-    @ExperimentalCoroutinesApi
     @Test
-    fun getTVShows() = runBlockingTest {
-        coEvery { remoteDataSource.getTVShows() } returns dummyTVShows
-        val tvShows = repository.getTVShows()
-        coVerify { remoteDataSource.getTVShows() }
+    fun getTVShows() {
+        val dataSourceFactory = mockkClass(DataSource.Factory::class) as DataSource.Factory<Int, TVShow>
+        every { localDateSource.getTVShows() } returns dataSourceFactory
 
-        tvShows.size.shouldNotBeNull()
-        tvShows[0].name.shouldBe(dummyTVShow.name)
-        tvShows[0].posterPath.shouldNotBeEmpty()
-        tvShows[0].genreIds.shouldNotBeNull()
+        repository.getTVShows()
+        val tvShows = Resource.success(PagedListUtil.mockPagedList(dummyTVShows))
+        verify { localDateSource.getTVShows() }
+
+        tvShows.data.shouldNotBeNull()
+        tvShows.data?.size.shouldBe(dummyTVShows.size)
     }
 
-    @ExperimentalCoroutinesApi
     @Test
-    fun getDetailMovies() = runBlockingTest {
-        coEvery { remoteDataSource.getDetailMovie(movieId) } returns dummyMovie
-        val movie = repository.getDetailMovies(movieId)
-        coVerify { remoteDataSource.getDetailMovie(movieId) }
+    fun getDetailMovies() {
+        val liveMovie = MutableLiveData<Movie>()
+        liveMovie.value = dummyMovie
+        every { localDateSource.getMovie(movieId) } returns liveMovie
+
+        val movie = LiveDataTestUtil.getValue(repository.getDetailMovies(movieId)).data
+        verify { localDateSource.getMovie(movieId) }
 
         movie.shouldNotBeNull()
         movie.title.shouldBe(dummyMovie.title)
@@ -84,12 +97,14 @@ class RepositoryTest {
         movie.genreIds.shouldNotBeNull()
     }
 
-    @ExperimentalCoroutinesApi
     @Test
-    fun getDetailTVShow() = runBlockingTest {
-        coEvery { remoteDataSource.getDetailTVShow(tvShowId) } returns dummyTVShow
-        val tvShow = repository.getDetailTVShow(tvShowId)
-        coVerify { remoteDataSource.getDetailTVShow(tvShowId) }
+    fun getDetailTVShow() {
+        val liveTVShow = MutableLiveData<TVShow>()
+        liveTVShow.value = dummyTVShow
+        every { localDateSource.getTVShow(tvShowId) } returns liveTVShow
+
+        val tvShow = LiveDataTestUtil.getValue(repository.getDetailTVShow(tvShowId)).data
+        verify { localDateSource.getTVShow(tvShowId) }
 
         tvShow.shouldNotBeNull()
         tvShow.name.shouldBe(dummyTVShow.name)
@@ -98,5 +113,47 @@ class RepositoryTest {
         tvShow.firstAirDate.shouldBe(dummyTVShow.firstAirDate)
         tvShow.overview.shouldBe(dummyTVShow.overview)
         tvShow.genreIds.shouldNotBeNull()
+    }
+
+    @Test
+    fun getFavoriteMovies() {
+        val dataSourceFactory = mockkClass(DataSource.Factory::class) as DataSource.Factory<Int, Movie>
+        every { localDateSource.getFavoriteMovies() } returns dataSourceFactory
+        repository.getFavoriteMovies()
+
+        val movies = Resource.success(PagedListUtil.mockPagedList(dummyMovies))
+        verify { localDateSource.getFavoriteMovies() }
+        movies.data.shouldNotBeNull()
+        movies.data?.size.shouldBe(dummyMovies.size)
+    }
+
+    @Test
+    fun getFavoriteTVShows() {
+        val dataSourceFactory = mockkClass(DataSource.Factory::class) as DataSource.Factory<Int, TVShow>
+        every { localDateSource.getFavoriteTVShows() } returns dataSourceFactory
+        repository.getFavoriteTVShows()
+
+        val tvShows = Resource.success(PagedListUtil.mockPagedList(dummyTVShows))
+        verify { localDateSource.getFavoriteTVShows() }
+        tvShows.data.shouldNotBeNull()
+        tvShows.data?.size.shouldBe(dummyMovies.size)
+    }
+
+    @Test
+    fun setFavoriteMovie() {
+        val favoriteMovie = dummyMovie.apply {
+            isFavorite = true
+        }
+        repository.updateMovie(favoriteMovie)
+        verify { localDateSource.updateMovie(favoriteMovie) }
+    }
+
+    @Test
+    fun setFavoriteTVShow() {
+        val favoriteTVShow = dummyTVShow.apply {
+            isFavorite = true
+        }
+        repository.updateTVShow(favoriteTVShow)
+        verify { localDateSource.updateTVShow(favoriteTVShow) }
     }
 }
