@@ -1,4 +1,4 @@
-package io.indrian.whatmovies.ui.favorite
+package io.indrian.whatmovies.ui.favorites
 
 import android.os.Bundle
 import android.view.LayoutInflater

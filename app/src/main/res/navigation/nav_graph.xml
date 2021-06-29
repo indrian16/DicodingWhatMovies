@@ -17,7 +17,7 @@
         tools:layout="@layout/fragment_t_v_show" />
     <fragment
         android:id="@+id/navigation_favorite"
-        android:name="io.indrian.whatmovies.ui.favorite.FavoriteFragment"
+        android:name="io.indrian.whatmovies.ui.favorites.FavoriteFragment"
         android:label="@string/favorites"
         tools:layout="@layout/fragment_favorite" />
 </navigation>
