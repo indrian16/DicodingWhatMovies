@@ -63,11 +63,11 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_margin="16dp"
-            android:maxLines="2"
+            android:maxLines="3"
             android:text="@string/title"
             android:textColor="@color/black"
             android:textStyle="bold"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintEnd_toStartOf="@+id/btn_white_list"
             app:layout_constraintStart_toEndOf="@+id/card_poster"
             app:layout_constraintTop_toBottomOf="@+id/image_backdrop" />
 
@@ -128,6 +128,19 @@
             app:layout_constraintEnd_toEndOf="@+id/tv_title_value"
             app:layout_constraintStart_toStartOf="@+id/card_poster"
             app:layout_constraintTop_toBottomOf="@+id/tv_overview_value" />
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/btn_white_list"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="24dp"
+            android:contentDescription="@string/favorites"
+            android:src="@drawable/ic_heart_outlined"
+            app:tint="@color/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="@+id/card_poster"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/card_poster" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

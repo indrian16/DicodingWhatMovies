@@ -2,6 +2,7 @@ package io.indrian.whatmovies.adapter
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.paging.PagedListAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -49,6 +50,12 @@ class TVShowAdapter(private val onItemCallbackListener: OnItemCallbackListener) 
                 tvGenre.text = tvShows.genreIds.joinToString { AppUtils.getGenreName(it) }
                 btnWhiteList.setOnClickListener {
                     onItemCallbackListener.onWhiteList(tvShows)
+                }
+
+                if (tvShows.isFavorite) {
+                    btnWhiteList.icon = ContextCompat.getDrawable(itemBinding.root.context, R.drawable.ic_heart_fill)
+                } else {
+                    btnWhiteList.icon = ContextCompat.getDrawable(itemBinding.root.context, R.drawable.ic_heart_outlined)
                 }
 
                 root.setOnClickListener {

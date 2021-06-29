@@ -72,9 +72,7 @@ class Repository(
                 return remoteDataSource.getDetailMovie(id)
             }
 
-            override fun saveCallResult(data: Movie) {
-                localDataSource.updateMovie(data)
-            }
+            override fun saveCallResult(data: Movie) {}
         }.asLiveData()
     }
 
@@ -92,10 +90,28 @@ class Repository(
                 return remoteDataSource.getDetailTVShow(id)
             }
 
-            override fun saveCallResult(data: TVShow) {
-                localDataSource.updateTVShow(data)
-            }
+            override fun saveCallResult(data: TVShow) {}
         }.asLiveData()
+    }
+
+    fun getFavoriteMovies(): LiveData<PagedList<Movie>> {
+        return LivePagedListBuilder(localDataSource.getFavoriteMovies(), pageConfig()).build()
+    }
+
+    fun updateMovie(movie: Movie) {
+        appExecutors.diskIO().execute {
+            localDataSource.updateMovie(movie)
+        }
+    }
+
+    fun getFavoriteTVShows(): LiveData<PagedList<TVShow>> {
+        return LivePagedListBuilder(localDataSource.getFavoriteTVShows(), pageConfig()).build()
+    }
+
+    fun updateTVShow(tvShow: TVShow) {
+        appExecutors.diskIO().execute {
+            localDataSource.updateTVShow(tvShow)
+        }
     }
 
     private fun pageConfig() = PagedList.Config.Builder()

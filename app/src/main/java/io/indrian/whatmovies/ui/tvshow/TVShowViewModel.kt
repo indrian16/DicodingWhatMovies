@@ -18,6 +18,8 @@ class TVShowViewModel(private val repository: Repository) : ViewModel() {
 
     fun getTVShows() = repository.getTVShows()
 
+    fun setFavorite(tvShow: TVShow) = repository.updateTVShow(tvShow)
+
     fun openDetailTVShow(id: Long) {
         _eventOpenDetailTVShow.value = Event(id)
     }

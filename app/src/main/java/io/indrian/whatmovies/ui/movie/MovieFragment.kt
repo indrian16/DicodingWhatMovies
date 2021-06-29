@@ -92,7 +92,10 @@ class MovieFragment : Fragment(), MovieAdapter.OnItemCallbackListener {
     }
 
     override fun onWhiteList(movie: Movie) {
-        toast(getString(R.string.coming_soon))
+        val newMovie = movie.apply {
+            isFavorite = !isFavorite
+        }
+        viewModel.setFavorite(newMovie)
     }
 
     override fun onDestroyView() {

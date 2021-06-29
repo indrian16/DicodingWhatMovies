@@ -7,12 +7,13 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.paging.PagedList
-import io.indrian.whatmovies.R
 import io.indrian.whatmovies.adapter.TVShowAdapter
 import io.indrian.whatmovies.data.models.TVShow
 import io.indrian.whatmovies.databinding.FragmentTVShowBinding
 import io.indrian.whatmovies.ui.detail.DetailActivity
-import io.indrian.whatmovies.utils.*
+import io.indrian.whatmovies.utils.Event
+import io.indrian.whatmovies.utils.toGone
+import io.indrian.whatmovies.utils.toVisible
 import io.indrian.whatmovies.vo.Resource
 import io.indrian.whatmovies.vo.Status
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -83,7 +84,10 @@ class TVShowFragment : Fragment(), TVShowAdapter.OnItemCallbackListener {
     }
 
     override fun onWhiteList(tvShows: TVShow) {
-        toast(getString(R.string.coming_soon))
+        val newTVShow = tvShows.apply {
+            isFavorite = !isFavorite
+        }
+        viewModel.setFavorite(newTVShow)
     }
 
     override fun onDestroyView() {

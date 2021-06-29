@@ -101,7 +101,6 @@ class DetailActivity : AppCompatActivity() {
             btnEnd.setIconResource(R.drawable.ic_share)
             btnEnd.setIconTintResource(R.color.white)
             btnEnd.strokeColor = ColorStateList.valueOf(ContextCompat.getColor(root.context, R.color.white))
-
             btnStart.setOnClickListener { finish() }
         }
     }
@@ -122,6 +121,7 @@ class DetailActivity : AppCompatActivity() {
             tvInformation.text = "${getString(R.string.year)}: ${AppUtils.getYear(movie.releaseDate)} | ${movie.voteAverage} "
             tvOverviewValue.text = movie.overview
 
+            genreGroup.removeAllViews()
             movie.genreIds.map {
                 Chip(this@DetailActivity).apply {
                     text = AppUtils.getGenreName(it)
@@ -133,6 +133,16 @@ class DetailActivity : AppCompatActivity() {
 
             binding.toolbarLayout.btnEnd.setOnClickListener {
                 shareIt(movie.title, movie.overview)
+            }
+
+            setFavoriteState(movie.isFavorite)
+
+            btnWhiteList.setOnClickListener {
+                viewModel.setFavoriteMovie(
+                    movie.apply {
+                        isFavorite = !isFavorite
+                    }
+                )
             }
         }
     }
@@ -153,6 +163,7 @@ class DetailActivity : AppCompatActivity() {
             tvInformation.text = "${getString(R.string.year)}: ${AppUtils.getYear(tvShow.firstAirDate)} | ${tvShow.voteAverage} "
             tvOverviewValue.text = tvShow.overview
 
+            genreGroup.removeAllViews()
             tvShow.genreIds.map {
                 Chip(this@DetailActivity).apply {
                     text = AppUtils.getGenreName(it)
@@ -165,6 +176,28 @@ class DetailActivity : AppCompatActivity() {
             binding.toolbarLayout.btnEnd.setOnClickListener {
                 shareIt(tvShow.name, tvShow.overview)
             }
+
+            setFavoriteState(tvShow.isFavorite)
+
+            btnWhiteList.setOnClickListener {
+                viewModel.setFavoriteTVShow(
+                    tvShow.apply {
+                        isFavorite = !isFavorite
+                    }
+                )
+            }
+        }
+    }
+
+    private fun setFavoriteState(state: Boolean = false) {
+        if (state) {
+            binding.btnWhiteList.setImageDrawable(
+                ContextCompat.getDrawable(baseContext, R.drawable.ic_heart_fill)
+            )
+        } else {
+            binding.btnWhiteList.setImageDrawable(
+                ContextCompat.getDrawable(baseContext, R.drawable.ic_heart_outlined)
+            )
         }
     }
 

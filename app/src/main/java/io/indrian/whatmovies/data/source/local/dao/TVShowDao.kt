@@ -19,4 +19,7 @@ interface TVShowDao {
 
     @Update
     fun updateTVShow(tvShow: TVShow)
+
+    @Query("SELECT * FROM tv_shows WHERE is_favorite = 1")
+    fun getFavoriteTVShows() : DataSource.Factory<Int, TVShow>
 }

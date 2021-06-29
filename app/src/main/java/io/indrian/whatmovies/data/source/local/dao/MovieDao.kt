@@ -20,4 +20,7 @@ interface MovieDao {
 
     @Update
     fun updateMovie(movie: Movie)
+
+    @Query("SELECT * FROM movies WHERE is_favorite = 1")
+    fun getFavoriteMovies() : DataSource.Factory<Int, Movie>
 }
